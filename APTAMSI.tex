@@ -1,0 +1,1507 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Document setup (class and packages) %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage[inline]{enumitem}
+\usepackage{scrextend}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\graphicspath{ {Figures/} } % all figures are located in this directory
+\usepackage[thicklines]{cancel} % enable strikethrough in math 
+\renewcommand\CancelColor{\color{red}} % set cancel color to red
+\addtokomafont{labelinglabel}{\sffamily} % nicer than descript. env
+\usepackage[margin=0.75in]{geometry}
+\allowdisplaybreaks % allow page breaks in align env
+
+\definecolor{CSbackground}{RGB}{30, 30, 30}
+\definecolor{CSkeywords}{RGB}{86, 156, 214}
+\definecolor{CSstrings}{RGB}{214, 157, 133}
+\definecolor{CScomments}{RGB}{96, 139, 78}
+\definecolor{CSemph}{RGB}{78, 201, 176}
+\definecolor{CSnumberbg}{RGB}{241, 241, 241}
+\definecolor{CSnumberline}{RGB}{38, 169, 202}
+
+\lstdefinestyle{CSharp}{
+    backgroundcolor=\color{CSbackground},
+    language=Python,
+    frame=l,
+    framesep=5pt,
+    basicstyle=\footnotesize\ttfamily\color{White},
+    showstringspaces=false,
+    keywordstyle=\color{CSkeywords}\bfseries,
+    identifierstyle=\ttfamily,
+    stringstyle=\color{CSstrings},
+    commentstyle=\color{CScomments},
+    rulecolor=\color{CSbackground},
+    emph={GZipStream,StreamWriter,WebClient,additionalClasses},
+    emphstyle=\ttfamily\color{CSemph},
+    xleftmargin=5pt,
+    xrightmargin=5pt,
+    aboveskip=\bigskipamount,
+    belowskip=\bigskipamount,
+    showspaces=false,
+    showtabs=false,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={(*@}{@*)},
+    numbers=left,
+    numbersep=1.1em,
+    stepnumber=1,
+    numberstyle=\tiny\color{Gray}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%   Enter relevant information here   %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\stuName}{Jan P. Guggenbuehler}
+\newcommand{\stuID}{11-932-191}
+\newcommand{\stuMail}{\url{jan.guggenbuehler@gmail.com}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\uni}{University of Zurich}
+\newcommand{\depart}{Department of Banking and Finance}
+\newcommand{\subj}{Advanced Probability Theory and Modern Statistical Inference}
+\newcommand{\docTitle}{Take Home Exam (Spring Term 2016)}
+\newcommand{\prof}{Prof. Marc S. Paolella}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%   Create header and display info    %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\toppush}
+\setlength{\toppush}{2\headheight}
+\addtolength{\toppush}{\headsep}
+
+\newcommand{\htitle}[3]{\noindent\vspace*{-\toppush}\newline\parbox{\textwidth}
+{\textit{\subj} \hfill\newline
+\depart , \uni \hfill #3\newline
+\stuName \hfill Student ID: #1\vspace*{-.5ex}\newline
+\mbox{}\hrulefill\mbox{}}\vspace*{1ex}\mbox{}\newline
+\begin{center}{\Large\bf #2}\end{center}}
+
+\newcommand{\titleInfo}[3]{\thispagestyle{empty}
+\pagestyle{myheadings}\htitle{#1}{#2}{#3}}
+
+% \setlength{\oddsidemargin}{0pt}
+% \setlength{\evensidemargin}{0pt}
+% \setlength{\textwidth}{6.5in}
+% \setlength{\topmargin}{0in}
+% \setlength{\textheight}{8.5in}
+
+\begin{document}
+\titleInfo{\stuID}{\docTitle}{\today}
+\setlength{\parindent}{0pt}
+\hrulefill
+\medskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%     Define useful math commands     %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*\diff{\mathop{}\!\mathrm{d}} % for dx at end of integral
+\newcommand*\unif{\text{Unif}} % for uniform distribution
+\newcommand{\E}[1]{\mathbb{E}\left[{#1}\right]} % expected value
+\renewcommand\qedsymbol{$\blacksquare$} % change QED symbol
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % selective numbering within align* environment
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    Actual start of the document     %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{enumerate}
+\item
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (a)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{enumerate}
+\item Let us first recall the two required results (equation 1.39 and example A.79):
+\begin{align*}
+\Gamma(a) &= 2 \int_0^{\infty} u^{2a-1}e^{-u^{2}} \, \diff u && (1.39) \\
+\sqrt{\pi} &= \int_{- \infty}^{\infty} e^{-x^{2}} \, \diff x && (\text{A}.79)
+\end{align*}
+
+Additionally, it is helpful to establish that the function $f(x) = e^{-x^{2}}$ is even. Recall that a function is even if the following equation holds for all values contained in the domain:
+\begin{align*}
+f(-x) = f(x)
+\intertext{Using the function $f(x) = e^{-x^{2}}$:}
+\underbrace{e^{-(-x)^{2}}}_{=f(-x)} = \underbrace{e^{-x^{2}}}_{=f(x)}
+\end{align*}
+And hence we can conclude that the function in question is indeed even. We will use this result later in our proof.
+
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $\Gamma(1/2) = \sqrt{\pi}$
+\end{labeling}
+\begin{proof}
+In order to prove that $\Gamma(1/2)$ equals $\sqrt{\pi}$, we can simply plug $\frac{1}{2}$ into our equation from 1.39 and start simplifying the resulting expression.
+\begin{align*}
+\Gamma(a) &= 2 \int_0^{\infty} u^{2a-1}e^{-u^{2}} \, \diff u
+\intertext{Substituting in $\frac{1}{2}$ for $a$:}
+\Gamma(1/2) &= 2 \int_0^{\infty} u^{2\frac{1}{2}-1}e^{-u^{2}} \, \diff u\\
+&= 2 \int_0^{\infty} e^{-u^{2}} \, \diff u
+\intertext{Due to the obviously symmetrical nature of the integrand $e^{-u^{2}}$ (it is an even function as discussed at the beginning of this proof), we can rearrange the expression as follows:}
+&= \int_{-\infty}^{\infty} e^{-u^{2}} \, \diff u
+\intertext{It is now trivial to see that we could just use $x$ instead of $u$ as our variable of choice.}
+&= \int_{-\infty}^{\infty} e^{-x^{2}} \, \diff x
+\intertext{This is the exact same expression used in example A.79 and hence we can apply it here, which yields our end result.}
+\Gamma(1/2) &= \sqrt{\pi}
+\end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (b)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item The second approach makes use of the following two equations:
+\begin{align}
+\label{eq:beta_alt}
+B(a,b) &= 2 \int_0^{\pi/2} (\sin \theta)^{2a-1} (\cos \theta)^{2b-1} \diff \theta \\
+\label{eq:beta_gamma}
+B(a,b) &= \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}
+\end{align}
+Again, it is helpful to first show a different result, which in turn will facilitate our actual proof. 
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $\Gamma(1) = 1$
+\end{labeling}
+\begin{proof}
+\begin{align*}
+\Gamma(a) &= \int_0^{\infty} x^{a-1} e^{-x} \, \diff x
+\intertext{Setting $a = 1$:}
+\Gamma(1) &= \int_0^{\infty} x^{1-1} e^{-x} \, \diff x
+= \int_0^{\infty} x^{0} e^{-x} \, \diff x \\
+&= \int_0^{\infty} e^{-x} \, \diff x \\
+&= \left[ -e^{-x} \right]_0^{\infty} \\
+&= \lim_{x \to \infty} -e^{-x} + e^{0} \\
+&= 0 + 1 \\
+&= 1
+\end{align*}
+\end{proof}
+
+We're now able to do the actual proof. 
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $\Gamma(1/2) = \sqrt{\pi}$
+\end{labeling}
+\begin{proof}
+Let us start by combining our two initial equations \eqref{eq:beta_alt} and \eqref{eq:beta_gamma}:
+\begin{align*}
+\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)} &= 2 \int_0^{\pi/2} (\sin \theta)^{2a-1} (\cos \theta)^{2b-1} \diff \theta
+\intertext{Setting $a=b=\frac{1}{2}$ yields:}
+\frac{\Gamma(1/2)\Gamma(1/2)}{\Gamma(1)} &= 2 \int_0^{\pi/2} (\sin \theta)^{2\frac{1}{2}-1} (\cos \theta)^{2\frac{1}{2}-1} \diff \theta \\
+\iff \frac{(\Gamma(1/2))^{2}}{\Gamma(1)} &= 2 \int_0^{\pi/2} (\sin \theta)^{1-1} (\cos \theta)^{1-1} \diff \theta \\
+&= 2 \int_0^{\pi/2} \diff \theta
+\intertext{As shown earlier, $\Gamma(1)$ simplifies to 1, and hence our equation is reduced to:}
+(\Gamma(1/2))^{2} &= 2 \int_0^{\pi/2} \diff \theta \\
+&= 2 \cdot \theta \vert_0^{\pi/2} \\
+&= 2(\frac{\pi}{2}-0) \\
+&= \pi \\
+\iff \Gamma(1/2) &= \pm \sqrt{\pi}
+\intertext{Given the definition of the gamma function, only the positive root is possible and hence we've shown:}
+\Gamma(1/2) &= \sqrt{\pi}
+\end{align*}
+\end{proof}
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (a)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item In order to demonstrate an approach that allows us to evaluate the definite integral $I = \int_0^{2} y^{4}(2-y)^{3} \diff y$ without using a calculator, it is helpful to first show two different results: the gamma difference equation and the  relationship between the gamma function and the factorial function. Let us start with the gamma difference equation, which states the following:
+
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $\Gamma(a) = (a-1)\Gamma(a-1) \quad \forall a \in \mathbb{R}_{>1}$
+\end{labeling}
+
+\begin{proof}
+\begin{align*}
+\Gamma(a) &=\int_{0}^{\infty} x^{a-1} e^{-x} \, \diff x
+\intertext{Let us now apply integration by parts with $u = x^{a-1}$ and $\diff v = e^{-x} \diff x$. This yields $\diff u = (a-1)x^{a-2} \diff x$ and $v = -e^{-x}$. Hence:}
+\Gamma(a) &= \left. u \cdot v\right\vert_{x=0}^{\infty} - \int_{0}^{\infty} v \, \diff u \\
+&= \underbrace{\left[ -e^{-x} x^{a-1} \right]_{x=0}^{\infty}}_{=0} + \int_{0}^{\infty} e^{-x} (a-1)x^{(a-1)-1} \, \diff x \\
+&= (a-1) \int_{0}^{\infty} e^{-x} x^{(a-1)-1} \, \diff x \\
+&= (a-1) \Gamma(a-1)
+\end{align*}
+\end{proof}
+
+The second useful proposition we will need for our upcoming proof describes the gamma function as an extension of the factorial function.
+
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $\Gamma(n) = (n-1)! \quad \forall n \in \mathbb{N}$
+\end{labeling}
+\begin{proof}
+This problem lends itself well to an induction-based proof. 
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Base case:}] The base case in this situation is $n=1$, which means we need to show that $\Gamma(1) = 0!$. Since $0!$ is equal to one and we have already shown that $\Gamma(1) = 1$ during the previous question, the base case holds true.
+\item[\textbf{Induction step:}] Assuming that our proposition holds for $n=k$, we now need to show that it also holds for $n=k+1$. The easiest way to do so consists of applying the gamma difference equation, which we proved above. According to this result, we can rewrite $\Gamma(k+1)$ as follows:
+\begin{align*}
+\Gamma(k+1) &= k \Gamma(k)
+\intertext{Since we're assuming the relationship holds for $n=k$:}
+&= k (k-1)! \\
+&= k!
+\end{align*}
+The proposition thus follows by mathematical induction.
+\end{labeling}
+\end{proof}
+
+We're now ready to show the actual result in question without relying on a calculator.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $I = \int_0^{2} y^{4}(2-y)^{3} \diff y = \frac{32}{35}$
+\end{labeling}
+\begin{proof}
+Our goal is to transform the expression into a beta function. This can be accomplished using the substitution $u=\frac{y}{2}$, which implies $y = 2u$, $y^{4} = 2^{4}u^{4}$, and $\diff y = 2 \diff u$:
+\begin{align*}
+I &= \int_0^{2} y^{4}(2-y)^{3} \, \diff y \\
+&= \int_0^{1} 2^{4}u^{4}(2-2u)^{3} 2 \, \diff u \\
+&= \int_0^{1} 2^{5}u^{4}(2(1-u))^{3} \, \diff u \\
+&= \int_0^{1} 2^{5}u^{4}2^{3}(1-u)^{3} \, \diff u \\
+&= 2^{8}\int_0^{1} u^{4}(1-u)^{3} \, \diff u \\
+&= 2^{8}\int_0^{1} u^{5-1}(1-u)^{4-1} \, \diff u \\
+&= 2^{8} B(5,4)
+\intertext{Using the relationship between the gamma and beta functions aids us in our efforts to further simplify the expression.}
+I &= 2^{8}\frac{\Gamma(5)\Gamma(4)}{\Gamma(5+4)} = 2^{8}\frac{\Gamma(5)\Gamma(4)}{\Gamma(9)}
+\intertext{We can now make use of the relationship between the gamma function and the factorial function we proved earlier.}
+I &= 2^8 \frac{4! \cdot 3!}{8!} \\
+&= 2^8 \frac{\cancel{4 \cdot 3 \cdot 2}\cdot 3 \cdot 2 }{8 \cdot 7 \cdot 6 \cdot 5 \cdot \cancel{4 \cdot 3 \cdot 2}} \\
+&= 2^8 \frac{6}{8 \cdot 7 \cdot 6 \cdot 5} \\
+&= 2^5 \cancel{2^{3}} \frac{\cancel{6}}{\cancel{8} \cdot 7 \cdot \cancel{6} \cdot 5} \\
+&= \frac{2^5}{7 \cdot 5} \\
+&= \frac{32}{35}
+\end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (b)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $B(a,b) = \int_0^1 t^{a-1} (1-t)^{b-1} \, \diff t = \int_0^{\infty} s^{a-1} \left( \frac{1}{s+1} \right)^{a+b} \, \diff s$
+\end{labeling}
+\begin{proof}
+As indicated by the question statement, we need to find another integral substitution to show the proposed alternate formulation of the beta function. Let us start by substituting $s = \frac{t}{1-t}$. We also need to be able to express $t$ in terms of s, so let's derive an expression for that as well (based on our substitution):
+\begin{align*}
+s &= \frac{t}{1-t} \\
+\iff \frac{1-t}{t} &= \frac{1}{s} \\
+\iff \frac{1}{t}-1 &= \frac{1}{s} \\
+\iff \frac{1}{t} &= \frac{s+1}{s} \\
+\iff t &= \frac{s}{s+1}
+\intertext{Additionally, using the quotient rule for derivatives, we can derive:}
+\frac{\diff t}{\diff s} &= \frac{(s+1)-s}{(s+1)^{2}} = \frac{1}{(s+1)^{2}} \\
+\iff \diff t &= \frac{1}{(s+1)^{2}} \diff s
+\end{align*}
+Given our substitution, the bounds of integration obviously change as well, which is what we were looking for. Let us now start with the original integral (the classic beta function) and apply our substitution:
+\begin{align*}
+B(a, b) &= \int_{0}^{1} t^{a-1} (1-t)^{b-1} \, \diff t \\
+&= \int_{0}^{\infty} \left(\frac{s}{s+1}\right)^{a-1} \left(1-\frac{s}{s+1}\right)^{b-1} \frac{1}{(s+1)^{2}} \, \diff s \\
+&= \int_{0}^{\infty} \left(\frac{s}{s+1}\right)^{a-1} \left(\frac{s+1}{s+1}-\frac{s}{s+1}\right)^{b-1} \frac{1}{(s+1)^{2}} \, \diff s \\
+&= \int_{0}^{\infty} \left(\frac{s}{s+1}\right)^{a-1} \left(\frac{1}{s+1}\right)^{b-1} \left(\frac{1}{s+1}\right)^{2} \, \diff s \\
+&= \int_{0}^{\infty} \left(\frac{s}{s+1}\right)^{a-1} \left(\frac{1}{s+1}\right)^{b+1}  \, \diff s \\
+&= \int_{0}^{\infty} s^{a-1} \left(\frac{1}{s+1}\right)^{a-1} \left(\frac{1}{s+1}\right)^{b+1}  \, \diff s \\
+&= \int_{0}^{\infty} s^{a-1} \left(\frac{1}{s+1}\right)^{a-1+b+1} \, \diff s \\
+&= \int_{0}^{\infty} s^{a-1} \left(\frac{1}{s+1}\right)^{a+b} \, \diff s
+\end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (c)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $ \int_0^{\infty} e^{-mt}t^{z-1} \, \diff t = \frac{\Gamma(z)}{m^{z}} $
+\end{labeling}
+\begin{proof}
+\begin{align*}
+\intertext{Substituting $u=mt$ leads to $t=\frac{u}{m}$, $ \diff t = \frac{1}{m} \diff u $, and thus:}
+\int_0^{\infty} e^{-mt}t^{z-1} \, \diff t &= \int_0^{\infty} e^{-u} \left(\frac{u}{m}\right)^{z-1} \frac{1}{m} \, \diff u \\
+&= \int_0^{\infty} e^{-u} u^{z-1} \left(\frac{1}{m}\right)^{z-1} \frac{1}{m} \, \diff u \\
+&= \frac{1}{m^{z}} \int_0^{\infty} e^{-u} u^{z-1} \, \diff u \\
+&= \frac{\Gamma(z)}{m^{z}}
+\end{align*}
+\end{proof}
+
+Let us now prove the relationship between the gamma and beta function as requested by the exam question.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $ B(x,y) = \frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)} $
+\end{labeling}
+\begin{proof}
+\begin{align*}
+\int_0^{\infty} e^{-mt}t^{z-1} \, \diff t &= \frac{\Gamma(z)}{m^{z}} \\
+\intertext{Applying the proposed substitution ($m=s+1$ and $z=x+y$):}
+\int_0^{\infty} e^{-(s+1)t} t^{x+y-1} \, \diff t &= \frac{\Gamma(x+y)}{(s+1)^{x+y}} \\
+\Gamma(x+y) &= (s+1)^{x+y} \int_0^{\infty} e^{-(s+1)t} t^{x+y-1} \, \diff t
+\intertext{Since we're interested in the relationship between the beta and the gamma function, let us incorporate the beta function:}
+B(x,y) \Gamma(x+y) &= B(x,y) (s+1)^{x+y} \int_0^{\infty} e^{-(s+1)t} t^{x+y-1} \, \diff t
+\intertext{We are now going to use (on the right hand side of our equation) the alternate formulation of the beta function we encountered earlier. Then, based on Tonelli's theorem, which applies in this case due to the positive nature of the integrand(s), we obtain:}
+B(x,y) \cdot \Gamma(x+y) &= \int_{0}^{\infty}\int_0^{\infty} s^{x-1} \cancel{\left(\frac{1}{s+1}\right)^{x+y}} \cdot \cancel{(s+1)^{x+y}}  e^{-(s+1)t} t^{x+y-1} \, \diff t \diff s \\
+&= \int_{0}^{\infty}\int_0^{\infty} s^{x-1} e^{-(s+1)t} t^{x+y-1} \, \diff t \diff s \\
+&= \int_{0}^{\infty}\int_0^{\infty} s^{x-1} e^{-(s+1)t} t^{x-1} t^{y}\, \diff t \diff s \\
+&= \int_{0}^{\infty}\int_0^{\infty} (st)^{x-1} e^{-(s+1)t} t^{y}\, \diff t \diff s
+\intertext{Substituting $u=st$ leads to $s=\frac{u}{t}$, $\diff s = \frac{1}{t}\diff u$, and thus:}
+B(x,y) \cdot \Gamma(x+y) &= \int_{0}^{\infty}\int_0^{\infty} u^{x-1} e^{-(\frac{u}{t}+1)t} t^{y} \frac{1}{t} \, \diff t \diff u \\
+&= \int_{0}^{\infty}\int_0^{\infty} u^{x-1} e^{-u} e^{-t} t^{y} t^{-1} \, \diff t \diff u \\
+&= \int_{0}^{\infty}\int_0^{\infty} u^{x-1} e^{-u} e^{-t} t^{y-1} \, \diff t \diff u
+\intertext{Applying Tonelli's theorem once more yields:}
+B(x,y) \cdot \Gamma(x+y) &= \int_{0}^{\infty} u^{x-1} e^{-u} \, \diff u \cdot \int_0^{\infty} e^{-t} t^{y-1} \, \diff t \\
+&= \Gamma(x) \Gamma(y) \\
+\iff B(x,y) &= \frac{\Gamma(x) \Gamma(y)}{\Gamma(x+y)}
+\end{align*}
+\end{proof}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (a)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Binomial theorem:
+\begin{equation*}
+(a + b)^n = \sum_{k=0}^n \binom{n}{k} a^k b^{n-k} = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k
+\end{equation*}
+Vandermonde's theorem:
+\begin{equation*}
+\binom{N + M}{k} = \sum_{i=0}^k \binom{N}{i} \binom{M}{k-i}, \quad 0 < k \leq \min(N, M) 
+\end{equation*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (b)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Let us assume an urn with $N$ white balls and $M$ black balls. We then sample $n$ balls (without replacement) from said urn. If we then denote the number of white balls drawn as $X$, we've defined a random variable with a hypergeometric distribution. $X$ then has the following pmf:
+\begin{equation*}
+f_{\text{HGeo}}(x; N, M, n) = \dfrac{\binom{N}{x} \binom{M}{n-x}}{\binom{N+M}{n}} \, \mathbb{I}_{\{\max(0, n-M), \ldots, \min(n, N)\}}(x)
+\end{equation*}
+The above pmf assigns probabilities to various potential outcomes. More precisely, $f_{\text{HGeo}}(x; N, M, n)$ yields the probability of drawing exactly $x$ white balls and $n-x$ black balls. In line with common intuition, we can interpret the numerator of the pmf as the number of ways we could obtain $x$ white balls and $n-x$ black balls. As there are $N$ white balls, there exist $\binom{N}{x}$ combinations with exactly $x$ white balls. Since we are drawing $n$ balls in total, $n-x$ are still to be withdrawn from the urn. Recall that there are $M$ black balls and thus there are $\binom{M}{n-x}$ combinations with exactly $n-x$ black balls. This lets us conclude that there must be $\binom{N}{x}\binom{M}{n-x}$ combinations that result in $x$ white balls and $n-x$ black balls.
+The denominator on the other hand contains an expression for the total amount of outcomes and should be fairly self-explanatory. Given the $N$ white balls and the $M$ back balls, there are $N+M$ balls contained within the urn. Since we're picking $n$ balls, the total amount of outcomes is just $\binom{N+M}{n}$. So the fraction does indeed seem to represent the appropriate probability.
+Now all that's left to explain is the indicator function, which might look somewhat daunting at first, but is actually quite easy to understand. First of all, no matter the exact values of $N,M$, and $n$, $x$ can't be negative and it can't exceed $N$ either (it's not possible to draw more white balls than there actually are since we're sampling without replacement). If $n-M > 0$ - that is to say we draw more balls than there are black balls - the difference of $n$ and $M$ constitutes a lower bound as well. Even if we picked all $M$ of the black balls, we'd still have to sample $n-M$ more times and would thus pick $n-M$ white balls since there are no more black ones left. We've now explained the second part of the maximum function found in the indicator function. Let us now shift our focus to the upper bound, which involves a minumum function. As we've already mentioned, $x$ obviously cannot be larger than $N$ since there are only $N$ white balls. Furthermore, we cannot draw more white balls than actual draws and so the upper bound should be clear as well. \\
+Let us now spend some time on a few asymptotic arguments. It should be obvious that the hypergeometric distribution resembles certain aspects of the binomial distribution since they only differ in one key point. While the binomial distribution describes sampling \textbf{with} replacement, the hypergeometric distribution considers the case of sampling \textbf{without} replacement. Intuitively, it should be easy to digest that the difference between the binomial and hypergeomeetric distributions approaches zero as $N$ and $M$ approach infinity while we keep the ratio of the two  and our sample size $n$ constant. Let us now provide a formal proof for this claim.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] Let $X$ be a discrete random variable with a hypergeometric distribution such that $X \sim \text{HGeo}(N,M,n)$. Keeping sample size ($n$) and the proportion of white balls (denoted as $p$) constant:
+\begin{equation*}
+\lim_{\substack{N \to \infty \\ M \to \infty}} f_X(x;N,M,n) = \underbrace{\binom{n}{x} p^{x} (1-p)^{n-x} \, \mathbb{I}_{\{0, \ldots, n\}}(x)}_{\text{pmf of Bin}(n,p)}
+\end{equation*} 
+\end{labeling}
+\begin{proof}
+Let us start by rearranging the pmf of $X$ we stated at the beginning of this sub-question. First of all - as a means of improving readability - we'll denote the subscript of the indicator function of the hypergeometric (the set) as $S$ for the majority of this proof and only tackle it right at the end as it's extremely easy to handle.
+\begin{align*}
+f_{X}(x; N, M, n) &= \dfrac{\binom{N}{x} \binom{M}{n-x}}{\binom{N+M}{n}} \, \mathbb{I}_{S}(x) \\
+&= \frac{N!}{x!(N-x)!} \frac{M!}{(n-x)!(M-(n-x))!} \frac{n!(N+M-n)!}{(N+M)!} \, \mathbb{I}_{S}(x) \\
+&= \binom{n}{x} \frac{N!}{(N-x)!} \frac{M!}{(M-(n-x))!} \frac{(N+M-n)!}{(N+M)!} \, \mathbb{I}_{S}(x) \\
+&= \binom{n}{x} N(N-1)\ldots(N-x+1) \frac{M!}{(M-(n-x))!} \frac{(N+M-n)!}{(N+M)!} \, \mathbb{I}_{S}(x) \\
+&= \binom{n}{x} N(N-1)\ldots(N-x+1) M(M-1)\ldots(M-(n-x)+1) \\ 
+&\quad \; \frac{(N+M-n)!}{(N+M)!} \, \mathbb{I}_{S}(x) \\
+&= \binom{n}{x} N(N-1)\ldots(N-x+1) M(M-1)\ldots(M-(n-x)+1) \\ 
+&\quad \; \frac{1}{(N+M)(N+M-1) \ldots (N+M-n+1)} \, \mathbb{I}_{S}(x) \\
+&= \binom{n}{x} \frac{N(N-1)\ldots(N-x+1) M(M-1)\ldots(M-(n-x)+1)}{(N+M)(N+M-1) \ldots (N+M-n+1)} \, \mathbb{I}_{S}(x) \\
+&= \binom{n}{x} \prod_{i = 1}^{x} \frac{N-x+i}{M+N-x+i} \cdot \prod_{j = 1}^{n-x} \frac{M-(n-x)+j}{M+N-n+j} \, \mathbb{I}_{S}(x)
+\end{align*}
+Let us now study the asymptotic behavior of this pmf as $N$ and $M$ approach infinity, while the proportion of white balls $p=\frac{N}{N+M}$ remains constant.
+\begin{align*}
+\lim_{\substack{N \to \infty \\ M \to \infty}} f_{X}(x; N, M, n) &= \lim_{\substack{N \to \infty \\ M \to \infty}} \binom{n}{x} \underbrace{\prod_{i = 1}^{x} \frac{N-x+i}{M+N-x+i}}_{\equiv \mathcal{Q}_1} \cdot \underbrace{\prod_{j = 1}^{n-x} \frac{M-(n-x)+j}{M+N-n+j}}_{\equiv \mathcal{Q}_2} \, \mathbb{I}_{S}(x)
+\intertext{Assuming the limits of all these factors exist, we can express the limit of the product as the product of limits:}
+\lim_{\substack{N \to \infty \\ M \to \infty}} f_{X}(x; N, M, n) &= \lim_{\substack{N \to \infty \\ M \to \infty}} \binom{n}{x} \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_1 \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_2 \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathbb{I}_{S}(x) \\
+&= \binom{n}{x} \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_1 \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_2 \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathbb{I}_{S}(x) \numberthis \label{eq:3:long}
+\end{align*}
+It is now necessary to compute these three limits contained in equation \eqref{eq:3:long}.
+\begin{align*}
+\lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_1 &= \lim_{\substack{N \to \infty \\ M \to \infty}} \prod_{i = 1}^{x} \frac{N-x+i}{M+N-x+i} \\
+&= \prod_{i = 1}^{x} \lim_{\substack{N \to \infty \\ M \to \infty}} \frac{N-x+i}{M+N-x+i} \\
+&= \prod_{k=1}^x \lim_{\substack{N \to \infty \\ M \to \infty}} \frac{\frac{N}{N+M} + \frac{i-x}{N+M}}{1 + \frac{i-x}{N+M}}  \\
+&= \prod_{k=1}^x \lim_{\substack{N \to \infty \\ M \to \infty}} \frac{p + \frac{i-x}{N+M}}{1 + \frac{i-x}{N+M}}  \\
+&= \prod_{k=1}^x p \\
+&= p^{x} \numberthis \label{eq:3:a} \\[2ex]
+\lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_2 &= \lim_{\substack{N \to \infty \\ M \to \infty}} \prod_{j = 1}^{n-x} \frac{M-(n-x)+j}{M+N-n+j} \\
+&= \lim_{\substack{N \to \infty \\ M \to \infty}} \prod_{j = 1}^{n-x} \frac{M-n+x+j}{M+N-n+j} \\
+&= \prod_{j = 1}^{n-x} \lim_{\substack{N \to \infty \\ M \to \infty}} \frac{M-n+x+j}{M+N-n+j} \\
+&= \prod_{j = 1}^{n-x} \lim_{\substack{N \to \infty \\ M \to \infty}} \frac{ \frac{M}{N+M} + \frac{x+j-n}{N+M} }  { 1 + \frac{j-n}{N+M} } \\
+&= \prod_{j = 1}^{n-x} \lim_{\substack{N \to \infty \\ M \to \infty}} \frac{ (1-p) + \frac{x+j-n}{N+M} }  { 1 + \frac{j-n}{N+M} } \\
+&= \prod_{j = 1}^{n-x} (1-p) \\
+&= (1-p)^{n-x} \numberthis \label{eq:3:b} \\[2ex]
+\lim_{\substack{N \to \infty \\ M \to \infty}} \mathbb{I}_S(x) &= \lim_{\substack{N \to \infty \\ M \to \infty}} \mathbb{I}_{\{\max(0, n-M), \ldots, \min(n, N)\}}(x) \\
+&= \mathbb{I}_{\{0, \ldots, n\}}(x) \numberthis \label{eq:3:c}
+\end{align*}
+We can now insert our results from equations \eqref{eq:3:a}, \eqref{eq:3:b}, and \eqref{eq:3:c} into equation \eqref{eq:3:long}:
+\begin{align*}
+\lim_{\substack{N \to \infty \\ M \to \infty}} f_{X}(x; N, M, n) &= \binom{n}{x} \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_1 \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathcal{Q}_2 \cdot \lim_{\substack{N \to \infty \\ M \to \infty}} \mathbb{I}_{S}(x) \\
+&= \underbrace{\binom{n}{x} p^{x} (1-p)^{n-x} \, \mathbb{I}_{\{0, \ldots, n\}}(x)}_{\text{pmf of Bin}\left(n, p\right)}
+\end{align*}
+We have thus shown that the limiting case (assuming certain conditions hold true) of the hypergeometric is a binomial with $p = \frac{N}{N+M}$.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (c)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+We're first asked to derive the Poisson pmf as a limiting case of the binomial distribution.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] Let $Y \sim \text{Bin}(n, p)$ and $p=\lambda/n$. Then, as $n$ approaches infinity (and $p$ approaches zero):
+\begin{equation*}
+\lim_{\substack{n \to \infty \\ p \to 0}} f_Y(y;n,p) = \underbrace{\frac{e^{-\lambda}\lambda^{y}}{y!} \, \mathbb{I}_{\left\{ 0, 1, \ldots \right\}}(y)}_{\text{pmf of Poi}(\lambda)}
+\end{equation*} 
+\end{labeling}
+\begin{proof}
+Let us start by rearranging the pmf of $Y$.
+\begin{align*}
+f_Y(y;n,p) &= \binom{n}{y} p^y(1-p)^{n-y} \, \mathbb{I}_{\left\{ 0, 1, \ldots, n \right\}}(y) \\
+&= \frac{n!}{(n-y)!\,y!}\left( \frac{\lambda}{n} \right)^y \left(1 - \frac{\lambda}{n}\right)^{n-y} \, \mathbb{I}_{\left\{ 0, 1, \ldots, n \right\}}(y) \\
+&= \frac{n!}{(n-y)!} \; \frac{1}{y!} \; \frac{\lambda^y}{n^y} \left(1 - \frac{\lambda}{n}\right)^{n}\left(1 - \frac{\lambda}{n}\right)^{-y} \, \mathbb{I}_{\left\{ 0, 1, \ldots, n \right\}}(y) \\
+&= \frac{n(n-1) \ldots (n-y+1)}{n^y} \; \frac{\lambda^y}{y!} \left(1 - \frac{\lambda}{n}\right)^{n} \left(1 - \frac{\lambda}{n}\right)^{-y} \, \mathbb{I}_{\left\{ 0, 1, \ldots, n \right\}}(y)
+\intertext{Let us now see what happens in the limit(s):}
+\lim_{\substack{n \to \infty \\ p \to 0}} f_Y(y;n,p) &= \lim_{\substack{n \to \infty \\ p \to 0}} \frac{n(n-1) \ldots (n-y+1)}{n^y} \; \frac{\lambda^y}{y!} \left(1 - \frac{\lambda}{n}\right)^{n} \left(1 - \frac{\lambda}{n}\right)^{-y} \, \mathbb{I}_{\left\{ 0, 1, \ldots, n \right\}}(y)
+\intertext{Assuming the limits of all these factors exist, we can express the limit of the product as the product of limits:}
+\lim_{\substack{n \to \infty \\ p \to 0}} f_Y(y;n,p) &= \lim_{\substack{n \to \infty \\ p \to 0}} \frac{n(n-1) \ldots (n-y+1)}{n^y} \cdot \lim_{\substack{n \to \infty \\ p \to 0}} \frac{\lambda^y}{y!} \cdot \lim_{\substack{n \to \infty \\ p \to 0}} \left(1 - \frac{\lambda}{n}\right)^{n} \\
+& \quad \cdot \lim_{\substack{n \to \infty \\ p \to 0}} \left(1 - \frac{\lambda}{n}\right)^{-y} \cdot \lim_{\substack{n \to \infty \\ p \to 0}} \mathbb{I}_{\left\{ 0, 1, \ldots, n \right\}}(y)
+\intertext{Since the first limit expression's numerator multiplies $y$ expressions containing an $n$ and the denominator is just $n^{y}$, the entire first limit is obviously equal to 1.}
+\lim_{\substack{n \to \infty \\ p \to 0}} f_Y(y;n,p) &= \underbrace{\lim_{\substack{n \to \infty \\ p \to 0}} \frac{\lambda^y}{y!}}_{=\frac{\lambda^{y}}{y!}} \cdot \underbrace{\lim_{\substack{n \to \infty \\ p \to 0}} \left(1 - \frac{\lambda}{n}\right)^{n}}_{=e^{-\lambda}} \cdot \underbrace{\lim_{\substack{n \to \infty \\ p \to 0}} \left(1 - \frac{\lambda}{n}\right)^{-y}}_{=1} \cdot \underbrace{\lim_{\substack{n \to \infty \\ p \to 0}} \mathbb{I}_{\left\{ 0, 1, \ldots, n \right\}}(y)}_{\mathbb{I}_{\left\{ 0, 1, \ldots \right\}}(y)} \\
+&= \frac{e^{-\lambda} \lambda^y}{y!} \, \mathbb{I}_{\left\{ 0, 1, \ldots \right\}}(y)
+\end{align*}
+\end{proof}
+Since we've shown (preceding sub-question) that the hypergeometric approaches (as $N \to \infty$, $M \to \infty$, and $p = const$) the binomial, and that the binomial approaches (as $n \to \infty$, and $p \to 0$) the Poisson, we can approximate the hypergeometric using a Poisson with $\lambda = np = \frac{nN}{N+M}$.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (a)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] Let $Y$ be a continuous random variable with density $f_Y(y)$ symmetric about zero and cdf $F_Y$. Then:
+\begin{equation*}
+\E{F_Y\left(\frac{Y}{\sigma}\right)} = 0.5 \quad \forall \sigma > 0
+\end{equation*} 
+\end{labeling}
+\begin{proof}
+Let $Z$ be another random variable, which is independent of $Y$ but follows the same distribution and thus has the same cdf ($F_Z(z) = F_Y(y)$).
+\begin{align*}
+F_Y(y) &= \Pr(Y < y)
+\intertext{Since $Y$ and $Z$ follow the same distribution (by definition from above):}
+F_Y(y) &= \Pr(Z < y)
+\intertext{Hence, we can express $F_Y\left(\frac{Y}{\sigma}\right)$ as follows:}
+F_Y\left(\frac{Y}{\sigma}\right) &= \Pr\left(Z < \frac{Y}{\sigma} \right) \\
+&= \Pr\left(-Z > -\frac{Y}{\sigma} \right) \\
+&\stackrel{\text{sym.}}{=} \Pr\left(Z > \frac{Y}{\sigma} \right)
+\intertext{Note that this last step hinges on the fact that $Y$ (and thus $Z$) are symmetric about zero. Using basic properties from probability theory, we can rewrite our equation as follows.}
+F_Y\left(\frac{Y}{\sigma}\right) &= 1 - \Pr\left(Z < \frac{Y}{\sigma} \right) \\
+&=  1 - F_Z\left(\frac{Y}{\sigma} \right)
+\intertext{Since $Y$ and $Z$ have the same cdf:}
+F_Y\left(\frac{Y}{\sigma}\right) &= 1 - F_Y\left(\frac{Y}{\sigma} \right) \\
+\iff 2 \cdot F_Y\left(\frac{Y}{\sigma}\right) &= 1 \\
+\iff F_Y\left(\frac{Y}{\sigma}\right) &= 0.5
+\intertext{Since this is just a constant, taking its expectation has no effect.}
+\E{F_Y\left(\frac{Y}{\sigma}\right)} &= \E{0.5} \\
+&= 0.5
+\end{align*}
+We have thus shown the proposition.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (b)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Let us define $X = F_Y(Y/\sigma)$. We're now asked to derive an expression for the pdf of $X$. Note that following derivations in this question (and the ones yet to come) use the infimum definition (generalized inverse) of the inverse cdf (quantile function) as cdfs are - in general - weakly monotonic and right-continuous.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $f_X(t;\sigma) = \sigma f_Y(\sigma F_Y^{-1}(t)) \frac{\partial F_Y^{-1}(t)}{\partial t} \quad \forall \sigma > 0$
+\end{labeling}
+\begin{proof}
+Let us first derive the cdf $F_X(x)$ of $X$.
+\begin{align*}
+F_X(x;\sigma) &= \Pr(X \leq x) \\ 
+&= \Pr\left(F_Y\left(\frac{Y}{\sigma}\right) \leq x \right) \\
+&= \Pr\left( F_Y^{-1}\left( F_Y\left(\frac{Y}{\sigma}\right)\right) \leq F_Y^{-1}(x) \right) \\
+&= \Pr\left(\frac{Y}{\sigma} \leq F_Y^{-1}(x) \right)
+\intertext{We can multiply both sides of the inequality by $\sigma$ without changing the direction of the inequality as $\sigma$ is assumed to be positive.}
+F_X(x;\sigma) &= \Pr\left(Y \leq \sigma F_Y^{-1}(x) \right) \\
+&= F_Y(\sigma F_Y^{-1}(x))
+\intertext{Taking derivatives of both sides and applying the chain rule on the right hand side yields the desired result:}
+f_X(t; \sigma) &= \sigma f_Y(\sigma F_Y^{-1}(t)) \frac{\partial F_Y^{-1}(t)}{\partial t}, \quad \forall \sigma > 0
+\end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (c)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+In order to create the requested comparison, I've written a small Python script that should be fairly self-explanatory as all important parts and lines are commented. Basically, the script simply simulates $10^{6}$ $Y$ values from a Student's $t$ distribution with $\nu = 3$ degrees of freedom. It then transforms these $10^{6}$ $Y$ values with the cdf of $Y$ to illustrate the classic probability integral transform (PIT) (not requested by the question statement but a nice illustration). Additionally, based on these $10^{6}$ realizations of $Y$, we compute $10^{6}$ realizations of $X$. We then apply kernel density estimation (KDE) in order to implement the required comparison. Finally, the best-fitted beta distribution is estimated and it's pdf plotted. The results can be seen in the figure below. Notice that $X$ is not beta-distributed in general, as evidenced by the sharper peak of the KDE for $X$ (as opposed to the best-fitting beta distribution).
+\begin{center}
+\includegraphics[scale = 0.6]{4c.pdf}
+\end{center}
+And here's the code responsible for the output above:
+
+\begin{tcblisting}{
+    skin=enhanced,
+    colback=CSbackground,
+    boxrule=0pt,
+    arc=0pt,
+    outer arc=0pt,
+    top=-14.8pt,
+    bottom=-14.8pt,
+    colframe=red,
+    listing only,
+    left=-0.55pt,
+    right=-8pt,
+    overlay={\fill[CSnumberbg] ([xshift=-10pt]frame.south west) rectangle ([xshift=0pt]frame.north west);
+    \fill[CSnumberline] ([xshift=-10pt]frame.south west) rectangle ([xshift=-9pt]frame.north west);},
+    listing style=CSharp,
+    breakable,
+    bottomsep at break=14.8pt,
+    topsep at break=14.8pt,
+    colupper=white
+    }
+### Imports ###
+import os
+import numpy as np
+from numpy import random as rnd
+from scipy.stats import t
+from scipy.stats import beta
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+### Parameters ###
+nu = 3 # arbitrary choice
+sigma = 2 # arbitrary choice
+
+### Simulate Values ###
+draws1 = rnd.standard_t(nu, size = 1.e6) # draw one million Y values
+draws2 = t.cdf(draws1, df = nu) # classic PIT (F_Y(Y) is standard uniform)
+draws3 = t.cdf(draws1 / sigma, df = nu) # compute one million X values based on Y values
+alpha_fit, beta_fit, loc_fit, scale_fit = beta.fit(draws3) # determine best-fitted beta
+
+### Plot KDEs and CDF of Best-Fitted Beta PDF ###
+kdeFig = plt.figure() # start figure
+sns.set("talk") # set seaborn style to "talk" --> increase font size
+# add all KDEs with plot labels in LaTeX (hence the use of raw strings)
+sns.kdeplot(draws1, shade = True, clip = (-3, 3), label = r'KDE for $Y \sim t_3$')
+sns.kdeplot(draws2, shade = True, clip = (-3, 3), label = r'KDE for $F_Y(Y)$')
+sns.kdeplot(draws3, shade = True, clip = (-3, 3), label = r'KDE for $X$ with $\sigma = 2$')
+# add pdf for best-fitted beta with plot labels in LaTeX (hence the use of raw strings)
+x = np.linspace(-3,3, num = 1000) # create 1000 values between -3 and +3
+y = beta.pdf(x, a = alpha_fit, b = beta_fit, loc = loc_fit, scale = scale_fit) # f(x)
+plt.plot(x, y, label = r'PDF for Best-Fitted $B(\alpha, \beta)$')
+# title & legend
+plt.title('Kernel Density Estimation')
+plt.legend(loc='upper left')
+os.chdir('../Figures/') # navigate to "Figures" folder
+plt.savefig('4c.pdf') # store figure as pdf
+plt.close(kdeFig)
+\end{tcblisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (d)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Trivially, the answer is: 42
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{enumerate}[label=(\roman*)]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (i)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+The pdf of the Student's $t$ distribution with $n$ degrees of freedom is given by the following expression:
+\begin{equation*}
+f_t(x;n) = \frac{\Gamma(\frac{n+1}{2}) n^{\frac{n}{2}}}{\sqrt{\pi} \ \Gamma (\frac{n}{2})} (n+x^2)^{- \frac{n+1}{2}}
+\end{equation*}
+We're now tasked with finding the cdf of $X \sim t_2$.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $F_X(x) = \frac{1}{2}\left( 1 + \frac{x}{\sqrt{2+x^{2}}} \right)$
+\end{labeling}
+\begin{proof}
+Let us start by substituting $n=2$ into the pdf given above.
+\begin{align*}
+f_X(x;n) &= \frac{\Gamma(\frac{n+1}{2}) n^{\frac{n}{2}}}{\sqrt{\pi} \ \Gamma (\frac{n}{2})} (n+x^2)^{- \frac{n+1}{2}} \\
+f_X(x;2) &= \frac{\Gamma(\frac{2+1}{2}) 2^{\frac{2}{2}}}{\sqrt{\pi} \ \Gamma (\frac{2}{2})} (2+x^2)^{- \frac{2+1}{2}} \\
+&= \frac{\Gamma(\frac{3}{2}) 2}{\sqrt{\pi} \ \Gamma (1)} (2+x^2)^{- \frac{3}{2}}
+\intertext{As shown at the beginning of my answer to question 2a), we know the gamma difference equation to be true and can hence rewrite $\Gamma(3/2)$ as $\frac{1}{2} \Gamma(1/2)$. Thus:}
+f_X(x;2) &= \frac{\cancel{\frac{1}{2}} \Gamma(\frac{1}{2}) \cancel{2}}{\sqrt{\pi} \ \Gamma (1)} (2+x^2)^{- \frac{3}{2}}
+\intertext{Additionally, we've shown (question 2b)) that $\Gamma(1/2) = \sqrt{\pi}$ and $\Gamma(1) = 1$. Using these results allows us to simplify our pdf even more.}
+f_X(x;2) &= \frac{\cancel{\sqrt{\pi}}}{\cancel{\sqrt{\pi}}} (2+x^2)^{- \frac{3}{2}} \\
+&= (2+x^2)^{- \frac{3}{2}} \\
+&= \frac{1}{(2+x^2)^{\frac{3}{2}}}
+\intertext{In order to obtain the cdf, we now need to integrate our simplified pdf.}
+F_X(x) &= \int_{-\infty}^{x} \frac{1}{(2+t^2)^{\frac{3}{2}}} \, \diff t
+\intertext{This looks like a fairly standard trigonometric substitution problem, so let us do the following substitution:}
+t &= \sqrt{2} \tan (\theta) \iff \theta = \arctan \left( \frac{t}{\sqrt{2}} \right)
+\intertext{Hence:}
+\frac{\diff t}{\diff \theta} &= \sqrt{2} \sec^{2}(\theta) \iff \diff t = \sqrt{2} \sec^{2}(\theta) \diff \theta
+\intertext{Note that substitutions can change the bounds of integration. Since we're planning on undoing our substitutions later on, let us merely use $a$ and $b$ for our (potentially) new limits. Using the proposed substitution and considering the fact that $t^{2} = (\sqrt{2} \tan(\theta) )^{2} = 2 \tan^{2}(\theta)$ yields:}
+F_X(x) &= \int_a^{b} \frac{\sqrt{2} \sec^{2}(\theta)}{(2+2 \tan^{2}(\theta))^{\frac{3}{2}}} \, \diff \theta \\
+&= \int_{a}^{b} \frac{\sqrt{2} \sec^{2}(\theta)}{(2(\underbrace{1+\tan^{2}(\theta)}_{=\sec^{2}(\theta)})^{\frac{3}{2}}} \, \diff \theta \\
+&= \int_{a}^{b} \frac{\sqrt{2} \sec^{2}(\theta)}{(2 \sec^{2}(\theta))^{\frac{3}{2}}} \, \diff \theta \\
+&= \int_{a}^{b} \frac{2^{\frac{1}{2}} \sec^{2}(\theta)}{2^{\frac{3}{2}}  \sec^{2 \frac{3}{2}}(\theta)} \, \diff \theta \\
+&= \int_{a}^{b} \frac{\sec^{2}(\theta)}{2 \sec^{3}(\theta)} \, \diff \theta \\
+&= \frac{1}{2} \int_{a}^{b} \frac{1}{\sec(\theta)} \, \diff \theta \\
+&= \frac{1}{2} \int_{a}^{b} \cos(\theta) \, \diff \theta \\
+&= \frac{1}{2} \left. \sin(\theta) \right\vert_a^{b}
+\intertext{Reversing the substitution with $\theta = \arctan (t/\sqrt{2})$ and recalling that $\sin(\arctan(t)) = \frac{t}{\sqrt{1+t^{2}}}$ produces:}
+F_X(x) &= \left[ \frac{t}{2^{\frac{3}{2}} \sqrt{\frac{t^{2}}{2}+1} } \right]_{-\infty}^{x} \\
+&= \left[ \frac{t}{2 \cdot 2^{\frac{1}{2}} \sqrt{\frac{t^{2}}{2}+1} } \right]_{-\infty}^{x} \\
+&= \left[ \frac{t}{2 \sqrt{t^{2}+2} } \right]_{-\infty}^{x} \\
+&= \frac{x}{2\sqrt{x^{2}+2}} - \underbrace{\lim_{t \to -\infty} \frac{t}{2 \sqrt{t^{2}+2}}}_{=-1/2} \\
+&= \frac{x}{2\sqrt{x^{2}+2}} + \frac{1}{2} \\
+&= \frac{1}{2}\left(\frac{x}{\sqrt{x^{2}+2}} + 1\right)
+\end{align*}
+\end{proof}
+Alternatively (and probably somewhat easier), we could have made use of the fundamental theorem of calculus to show this result.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (ii)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Deriving the quantile function requires us to invert the cdf, which is assumed to be possible. While in general, there is no closed-form expression for the quantile function of a Student's $t$ distribution, we're able to provide one in this case as $n=2$. Recall the cdf (given $n=2$) we derived above and set it equal to $p$.
+\begin{align*}
+F_X(x) = \frac{1}{2}\left(\frac{x}{\sqrt{x^{2}+2}} + 1\right) = p
+\intertext{We're now interested in rearranging this equation in order to obtain $x$ as a function of $p$ (the quantile function).}
+\frac{1}{2}\left(\frac{x}{\sqrt{x^{2}+2}} + 1\right) &= p \\
+\iff \frac{x}{\sqrt{x^{2}+2}} + 1 &= 2p \\
+\iff \frac{x}{\sqrt{x^{2}+2}} &= 2p-1 \\
+\iff x &= \sqrt{x^{2}+2}(2p-1) \\
+\iff x^{2} &= (x^{2}+2)(2p-1)^{2} \\
+&= x^{2}(2p-1)^{2} + 2(2p-1)^{2} \\
+\iff x^{2} - x^{2}(2p-1)^{2} &= 2(2p-1)^{2} \\
+\iff x^{2} (1-(2p-1)^{2}) &= 2(2p-1)^{2} \\
+\iff x^{2} (1-(4p^{2}-4p+1)) &= 2(2p-1)^{2} \\
+\iff x^{2} (1-4p^{2}+4p-1)) &= 2(2p-1)^{2} \\
+\iff x^{2} (4p-4p^{2}) &= 2(2p-1)^{2} \\
+\iff x^{2} 4p(1-p) &= 2(2p-1)^{2} \\
+\iff x^{2} &= \frac{2(2p-1)^{2}}{4p(1-p)} \\
+&= \frac{(2p-1)^{2}}{2p(1-p)} \\
+\iff x&= \pm \sqrt{\frac{(2p-1)^{2}}{2p(1-p)}} \\
+&= \pm \frac{2p-1}{\sqrt{2p(1-p)}} \\
+\end{align*}
+Since we know the distribution to be symmetric about zero, we can conclude that 
+the quantile function for $p=0.5$ should yield zero and negative (positve) values if $p$ is below (above) one half. We can thus immediately discard the negative solution of the two candidates found above. The quantile function is then:
+\begin{equation*}
+F_X^{-1}(p) = \frac{2p-1}{\sqrt{2p(1-p)}}
+\end{equation*}
+Visually, this quantile function looks as follows and exhibits all desired properties mentioned above:
+\begin{center}
+\includegraphics[scale=0.4]{5b.pdf}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%     (iii)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+The second raw moment does not exist in this case. 
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $\E{X^{2}}$ is not defined if $n = 2$
+\end{labeling}
+
+\begin{proof}
+In order to show this, let us start with the general case where degrees of freedom are denoted by $n$. Furthermore, we'll use $K$ as defined in the task description statement:
+\begin{align*}
+K_n &= \frac{n^{-\frac{1}{2}}}{B\left(\frac{n}{2}, \frac{1}{2}\right)}
+\intertext{Beginning with the definition of the expected value:}
+\E{X^2} &= \int_{-\infty}^{\infty} x^2 f_X(x) \, \diff x
+\intertext{Plugging in the density (using $K$ as defined above) yields:}
+\E{X^2} &= \int_{-\infty}^{\infty} x^2 K_n \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} \, \diff x
+\intertext{Due to symmetry (as given task description statement), we can rewrite the integral as follows:}
+\E{X^2} &= 2 \int_{0}^{\infty} x^2 K_n \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} \, \diff x \\
+&= 2K_n \int_{0}^{\infty} x^2 \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} \, \diff x
+\intertext{We can now perform a u-substitution with $u = \frac{x^{2}}{n}$, which implies $x^{2} = un$, and $\diff x = \frac{\sqrt{n}}{2\sqrt{u}} \diff u$. Note that this substitution leaves the bounds of integration unchanged. Hence:}
+\E{X^2} &= 2K_n \int_{0}^{\infty} un \left(1+u\right)^{-\frac{n+1}{2}} \frac{\sqrt{n}}{2\sqrt{u}} \, \diff u \\
+&= \cancel{2} K_n \int_{0}^{\infty} un \left(1+u\right)^{-\frac{n+1}{2}} n^{\frac{1}{2}} u^{-\frac{1}{2}} \cancel{\frac{1}{2}} \, \diff u \\
+&= K_n \int_{0}^{\infty} u^{\frac{1}{2}} n^{\frac{3}{2}} \left(1+u\right)^{-\frac{n+1}{2}} \, \diff u \\
+&= K_n n^{\frac{3}{2}} \int_{0}^{\infty} u^{\frac{1}{2}} \left(1+u\right)^{-\frac{n+1}{2}} \, \diff u \\
+&= K_n n^{\frac{3}{2}} \int_{0}^{\infty} \frac{u^{\frac{1}{2}}}{\left(1+u\right)^{\frac{n+1}{2}}} \, \diff u
+\intertext{This integral already looks very similar to the alternate representation of the beta function we've proven for question 2b). Let us thus rewrite the exponents in order to have the exact same form.}
+\E{X^2} &= K_n n^{\frac{3}{2}} \int_{0}^{\infty} \frac{u^{\frac{3}{2}-1}}{\left(1+u\right)^{\frac{n}{2}+\frac{1}{2}}} \, \diff u \\
+&= K_n n^{\frac{3}{2}} \int_{0}^{\infty} \frac{u^{\frac{3}{2}-1}}{\left(1+u\right)^{\frac{n}{2}+\frac{1}{2} +\frac{2}{2} - \frac{2}{2} }} \, \diff u \\
+&= K_n n^{\frac{3}{2}} \int_{0}^{\infty} \frac{u^{\frac{3}{2}-1}}{\left(1+u\right)^{\frac{n}{2}-1+\frac{3}{2}}} \, \diff u
+\intertext{If we now define $a=\frac{3}{2}$ and $b = \frac{n}{2}-1$, we can write:}
+\E{X^2} &= K_n n^{\frac{3}{2}} \int_{0}^{\infty} \frac{u^{a-1}}{\left(1+u\right)^{b+a}} \, \diff u \\
+&= K_n n^{\frac{3}{2}} \int_{0}^{\infty} u^{a-1} \left( \frac{1}{u+1} \right)^{a+b} \, \diff u
+\intertext{Now we have the exact same form of the beta function mentined earlier and can thus replace the entire integral with $B\left(\frac{3}{2}, \frac{n}{2}-1\right)$.}
+\E{X^2} &= K_n n^{\frac{3}{2}} B\left(\frac{3}{2}, \frac{n}{2}-1\right)
+\intertext{Let us now use our definition of $K_n$ since it contains another beta function.}
+\E{X^2} &= \frac{n^{-\frac{1}{2}}}{B\left(\frac{n}{2}, \frac{1}{2}\right)} n^{\frac{3}{2}} B\left(\frac{3}{2}, \frac{n}{2}-1\right) \\
+&= \frac{n^{\frac{3}{2}}}{n^{\frac{1}{2}}} \frac{B\left(\frac{3}{2}, \frac{n}{2}-1\right)}{B\left(\frac{n}{2}, \frac{1}{2}\right)} \\
+&= n \frac{B\left(\frac{3}{2}, \frac{n}{2}-1\right)}{B\left(\frac{n}{2}, \frac{1}{2}\right)}
+\intertext{Using the relationship between the beta and gamma function we've proven for question 2c) enables us to write:}
+\E{X^2} &= n \dfrac{ \dfrac{ \Gamma\left( \frac{3}{2} \right) \Gamma\left( \frac{n}{2}-1 \right) } { \Gamma\left( \frac{3}{2} + \frac{n}{2}-1 \right)} }   { \dfrac{ \Gamma\left( \frac{n}{2} \right) \Gamma\left( \frac{1}{2} \right) } { \Gamma\left( \frac{n}{2} + \frac{1}{2} \right) } } \\
+&= n \frac{\Gamma\left( \frac{3}{2} \right) \Gamma\left( \frac{n}{2}-1 \right) \Gamma\left( \frac{n}{2} + \frac{1}{2} \right) }{\Gamma\left( \frac{3}{2} + \frac{n}{2}-1 \right) \Gamma\left( \frac{n}{2} \right) \Gamma\left( \frac{1}{2} \right) }
+\intertext{Since $\Gamma\left( \frac{3}{2} + \frac{n}{2}-1 \right) = \Gamma\left( \frac{3}{2} + \frac{n}{2} - \frac{2}{2} \right) = \Gamma\left( \frac{1}{2} + \frac{n}{2} \right)$:}
+\E{X^2} &= n \frac{\Gamma\left( \frac{3}{2} \right) \Gamma\left( \frac{n}{2}-1 \right) \cancel{\Gamma\left( \frac{n}{2} + \frac{1}{2} \right)} }{\cancel{\Gamma\left( \frac{1}{2} + \frac{n}{2} \right)} \Gamma\left( \frac{n}{2} \right) \Gamma\left( \frac{1}{2} \right) } \\
+&= n \frac{\Gamma\left( \frac{3}{2} \right) \Gamma\left( \frac{n}{2}-1 \right) }{\Gamma\left( \frac{n}{2} \right) \Gamma\left( \frac{1}{2} \right) }
+\intertext{Applying the gamma difference equation we've proven at the beginning of question 2a) results in the following simplifications:}
+\E{X^2} &= n \frac{ \frac{1}{2} \cancel{\Gamma\left( \frac{1}{2} \right)} \Gamma\left( \frac{n}{2}-1 \right) }{\Gamma\left( \frac{n}{2} \right) \cancel{\Gamma\left( \frac{1}{2} \right)}} \\
+&= n \frac{\Gamma\left( \frac{n}{2}-1 \right) }{2\Gamma\left( \frac{n}{2} \right) } \\
+&= n \frac{\cancel{\Gamma\left( \frac{n}{2}-1 \right)} }{2 \left(\frac{n}{2}-1\right) \cancel{\Gamma\left( \frac{n}{2}-1 \right)} } \\
+&= \frac{n}{2\left(\frac{n}{2}-1\right)} \\
+&= \frac{n}{n-2}
+\intertext{If $n=2$, this expression is clearly not defined (division by zero) and we've thus shown that the second raw moment does not exist.}
+\end{align*}
+\end{proof}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{enumerate}[label=(\roman*)]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (i)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Let us consider a random variable $C \sim \chi_k^{2} $ with the following density:
+\begin{equation*}
+f_C(c;k) = \frac{1}{2^{k/2} \Gamma(k/2)} c^{k/2-1}e^{-c/2} \mathbb{I}_{(0,\infty)}(c)
+\end{equation*}
+Letting $X \sim \sqrt{C/k}$ constitutes a simple univariate transformation with $c = kx^{2}$. Obtaining the pdf of $X$ requires us to use the following formula, which applies if the transformation is strictly monotonic (valid in our case):
+\begin{equation*}
+f_X(x;k) = f_C(c;k) \left| \frac{\diff c}{\diff x} \right|
+\end{equation*}
+Let us thus prove this result in order for us to use it during our upcoming derivation. Also note that we've proven a special case of this already (see question 4b)).
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] Assuming a random variable $S$ with pdf $f_S(s)$, cdf $F_S(s)$, and a strictly monotonic (required for upcoming inversion) transformation $T = g(S)$, we can express the pdf of $T$ as $f_T(t) = f_S(s) \left| \frac{\diff s}{\diff t} \right| $ where $f_S(s)$ is to be understood as $f_S(g^{-1}(t))$.
+\end{labeling}
+\begin{proof}
+This proof contains two parts (strictly increasing and strictly decreasing transformations). Let us start with the strictly increasing case:
+\begin{align*}
+F_T(t) &= \Pr(T \leq t) \\
+&= \Pr(g(S) \leq t) \\
+&= \Pr(g^{-1}(g(S)) \leq g^{-1}(t)) \\
+&= \Pr(S \leq g^{-1}(t)) \\
+&= F_S(g^{-1}(t))
+\end{align*}
+Notice that the direction of the inequality remains unchanged since $g$ is assumed to be a (strictly) increasing function. In order to obtain the pdf we can now take derivatives - using the chain rule - of both sides.
+\begin{align*}
+f_T(t) &= f_S(g^{-1}(t)) \frac{\diff g^{-1}(t)}{\diff t} \\
+&= f_S(g^{-1}(t)) \frac{\diff s}{\diff t} \\
+&= f_S(s) \frac{\diff s}{\diff t}
+\end{align*}
+And now for the case that $g$ is strictly decreasing:
+\begin{align*}
+F_T(t) &= \Pr(T \leq t) \\
+&= \Pr(g(S) \leq t) \\
+&= \Pr(g^{-1}(g(S)) \geq g^{-1}(t)) \\
+&= \Pr(S \geq g^{-1}(t)) \\
+&= 1 - F_S(g^{-1}(t))
+\end{align*}
+Note how the inequality was reversed due to $g$ being a (strictly) decreasing function. In order to obtain the pdf we can now, once again, take derivatives - using the chain rule - of both sides.
+\begin{align*}
+f_T(t) &= -f_S(g^{-1}(t)) \frac{\diff g^{-1}(t)}{\diff t} \\
+&= -f_S(g^{-1}(t)) \frac{\diff s}{\diff t} \\
+&= -f_S(s) \frac{\diff s}{\diff t}
+\intertext{We can now revert our case differentiation and summarize our result. Given a strictly monotonic transformation (irrespective of the fact whether it's strictly increasing or strictly decreasing), we can write the transformed pdf as:}
+f_T(t) &= f_S(s) \left| \frac{\diff s}{\diff t} \right|
+\intertext{Recall that $f_S(s)$ is to be understood as $f_S(g^{-1}(t))$.}
+\end{align*}
+\end{proof}
+Having shown the validity of the univariate transformation theorem, we're ready to apply it to our problem where $X \sim \sqrt{C/k}$ and $c = kx^{2}$.
+\begin{align*}
+f_X(x;k) &= f_C(c;k) \left| \frac{\diff c}{\diff x} \right| \\
+&= \frac{1}{2^{k/2}\Gamma(k/2)} \, (kx^2)^{k/2-1} e^{-(kx^2)/2} \, \underbrace{2kx}_{=\lvert\diff c / \diff x\rvert} \, \mathbb{I}_{(0,\infty)}(kx^{2})
+\intertext{Note that $\mathbb{I}_{(0,\infty)}(kx^{2})$ is just $\mathbb{I}_{(0,\infty)}(x)$}
+&= \frac{2kx}{2^{k/2}\Gamma(k/2)} \, (kx^2)^{k/2-1} e^{-(kx^2)/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+&= \frac{2kx 2^{-k/2} }{\Gamma(k/2)} \, (kx^2)^{k/2-1} e^{-(kx^2)/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+&= \frac{2^{1-k/2} kx }{\Gamma(k/2)} \, (kx^2)^{k/2-1} e^{-(kx^2)/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+&= \frac{2^{1-k/2} k^{1+k/2-1} x^{1+2k/2-2} }{\Gamma(k/2)} \, e^{-(kx^2)/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+&= \frac{2^{1-k/2} k^{k/2} x^{k-1} }{\Gamma(k/2)} \, e^{-(kx^2)/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (ii)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Let us use our newly derived pdf and plug in $k=1$.
+\begin{align*}
+f_X(x;k) &= \frac{2^{1-k/2} k^{k/2} x^{k-1} }{\Gamma(k/2)} \, e^{-(kx^2)/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+f_X(x;k) &= \frac{2^{1-1/2} 1^{1/2} x^{1-1} }{\Gamma(1/2)} \, e^{-(1x^2)/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+f_X(x;1) &= \frac{2^{1/2} }{\Gamma(1/2)} \, e^{-x^2/2} \, \mathbb{I}_{(0,\infty)}(x) \\
+f_X(x;1) &= \frac{\sqrt{2}}{\Gamma(1/2)} \, e^{-x^2/2} \, \mathbb{I}_{(0,\infty)}(x)
+\intertext{As shown in my answer to question 1, we know $\Gamma(1/2)$ to be equal to $\sqrt{\pi}$. Thus:}
+f_X(x;k) &= \sqrt{\frac{2}{\pi}} \, e^{-x^2/2} \, \mathbb{I}_{(0,\infty)}(x)
+\end{align*}
+This now constitutes the pdf of the folded normal. We can easily compute the mean as follows:
+\begin{align*}
+\E{X} &= \int_{-\infty}^{\infty} f_X(x) x \, \diff x \\
+&= \int_{-\infty}^{\infty} \sqrt{\frac{2}{\pi}} \, e^{-x^2/2} \, \mathbb{I}_{(0,\infty)}(x) x \, \diff x \\
+&= \int_{0}^{\infty} \sqrt{\frac{2}{\pi}} \, e^{-x^2/2} x \, \diff x \\
+&= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty}  e^{-x^2/2} x \, \diff x
+\intertext{Performing the obvious u-substitution of $u = x^{2}/2$ leaves the bounds of integration unchanged and implies $\diff x = \frac{1}{x}\diff u$. Hence:}
+\E{X} &= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty}  e^{-u} \, \diff u \\
+&= \sqrt{\frac{2}{\pi}} \left. -e^{-u} \right|_{0}^{\infty} \\
+&= \sqrt{\frac{2}{\pi}} \left( \lim_{u \to \infty} -e^{-u} - (-e^{0}) \right) \\
+&= \sqrt{\frac{2}{\pi}} \left( 0 + 1 \right) \\
+&= \sqrt{\frac{2}{\pi}}
+\end{align*}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 7 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (a)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+In order to develop the requested closed-form expression for $S = \sum_{j=0}^{u}j a^{j}$, let us compare $S$ and $aS$ by subtracting $aS$ from $S$, which yields $S(1-a)$. Additionally we'll also compute $aS(1-a)$ and subtract it from $S(1-a)$ resulting in $S(1-a)-aS(1-a)$.
+
+\[
+\arraycolsep=0.6pt\def\arraystretch{1}
+\begin{array}{@{}r c c c c c c c c c c c c c c c c c c c}
+S & = & a & + & 2a^2 & + & 3a^3 & + & \ldots & + & (u-1)a^{u-1} & + & ua^u && \\
+aS & = & & &  a^2 & + & 2a^3 & + & \ldots & + & (u-2)a^{u-1} & + & (u-1)a^{u} & + & ua^{u+1} && \\
+S(1-a) & = & a & + &  a^2 & + & a^3 & + & \ldots & + & a^{u-1} & + & a^{u} & - & ua^{u+1} && \\
+aS(1-a) & = & & &  a^2 & + & a^3 & + & \ldots & + & a^{u-1} & + & a^{u} & + & a^{u+1} & - & ua^{u+2} \\
+S(1-a) - aS(1-a) & = & a &  &  &  &  & & & & & & & - & (1+u)a^{u+1} & + & ua^{u+2} \\
+\end{array}
+\]
+
+The derivation above now enables us to finalize our result:
+\begin{align*}
+S(1-a) - aS(1-a) &= a - (1+u)a^{u+1} + ua^{u+2} \\
+\iff S(1-a)(1-a) &= a - (1+u)a^{u+1} + ua^{u+2} \\
+\iff S(1-a)^2 &= a - (1+u)a^{u+1} + ua^{u+2} \\
+\iff S &= \frac{a - (1+u)a^{u+1} + ua^{u+2}}{(1-a)^2}
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (b)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+As given per the task description statement:
+\begin{equation}
+\frac{\diff}{\diff a} \sum_{j=0}^{u} a^{j+1} = \sum_{j=0}^{u} (j+1)a^{j}
+\label{eq:7bderiv}
+\end{equation}
+Since our expression $S = \sum_{j=0}^{u}j a^{j}$ is currently not in the form of either sides of equation \eqref{eq:7bderiv}, let us try to rectify that by transforming it into the right hand side of equation \eqref{eq:7bderiv}. Starting with our initial form of $S$:
+\begin{align*}
+S &= \sum_{j=0}^{u}j a^{j}
+\intertext{As the first iteration is zero, we can start our summation at $j=1$.}
+S &= \sum_{j=1}^{u}j a^{j} \\
+S &= \sum_{j=1}^{u}j a^{j-1} a \\
+S &= a \sum_{j=1}^{u}j a^{j-1}
+\intertext{Change of variables with $k=j-1$, which of course means $j=k+1$:}
+S &= a \sum_{k=0}^{u-1} (k+1) a^{k}
+\intertext{Using equation \eqref{eq:7bderiv}:}
+S &= a \frac{\diff}{\diff a} \underbrace{\sum_{j=0}^{u-1} a^{j+1}}_{:=T} \numberthis \label{eq:7b:beforeT}
+\end{align*}
+Before we're ready to continue along this path, we need to simplify the geometric series $T$. This can be done analogously to the preceding question:
+\[
+\arraycolsep=0.6pt\def\arraystretch{1}
+\begin{array}{@{}r c c c c c c c c c c c c c c}
+T & = & a & + & a^2 & + & a^3 & + & \ldots & + & a^{u-1} & + & a^u \\
+aT & = &   &   & a^2 & + & a^3 & + & \ldots & + & a^{u-1} & + & a^u & + & a^{u+1} \\
+T(1-a) & = & a & + & & & & & & & & & & - & a^{u+1} \\
+\end{array}
+\]
+And thus:
+\begin{align*}
+T &= \frac{a - a^{u+1}}{1-a} \\
+&= \frac{a(1-a^{u})}{1-a} \numberthis \label{eq:7b:T}
+\intertext{Inserting our expression for $T$ from equation \eqref{eq:7b:T} into equation \eqref{eq:7b:beforeT} yields:}
+S &= a \frac{\diff}{\diff a} \frac{a(1-a^{u})}{1-a} \\
+&= a \frac{\diff}{\diff a} \frac{a - a^{u+1}}{1-a}
+\intertext{Using the quotient rule for derivatives:}
+S &= a \frac{(1-a)(1-(1+u)a^{u}) - (a - a^{u+1})(-1) }{(1-a)^{2}} \\
+S &= a \frac{(1-a)(1-(1+u)a^{u}) + a - a^{u+1} }{(1-a)^{2}} \\
+S &= a \frac{1-(1+u)a^{u} - a(1-(1+u)a^{u})  + a - a^{u+1} }{(1-a)^{2}} \\
+S &= a \frac{1-(1+u)a^{u} \cancel{- a}  + (1+u)a^{u+1}  \cancel{+ a} - a^{u+1} }{(1-a)^{2}} \\
+S &= a \frac{1-(1+u)a^{u} + (1+u)a^{u+1} - a^{u+1} }{(1-a)^{2}} \\
+S &= a \frac{1-(1+u)a^{u} + ua^{u+1} }{(1-a)^{2}} \\
+S &= \frac{a-(1+u)a^{u+1} + ua^{u+2} }{(1-a)^{2}}
+\end{align*}
+And now we've obtained the same result as in a).
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 8 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (a)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Despite the fact that we're not required to give a formal proof, I've chosen to provide one anyways as it is much easier to digest than the upcoming semi-verbal explanation.
+
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] Assuming $n$ iid continuous random variables ($X_1, X_2, \ldots, X_n$) with support $-\infty \leq a < b \leq \infty$ and a random variable $Y = \min(X_i)$, the cdf of $Y$ can be expressed as $F_Y(y) = 1 - \left[1-F_X(y)\right]^{n}$.
+\end{labeling}
+\begin{proof}
+\begin{align*}
+F_Y(y) &= \Pr(Y \leq y) \\
+&= 1 - \Pr(Y > y) \\
+&= 1 - \Pr(\min(X_i) > y) \\
+&= 1 - \Pr\left( \bigcap_{i=1}^{n} (X_i > y)\right)
+\intertext{Due to independence (iid implies independence):}
+F_Y(y) &= 1 - \prod_{i=1}^{n} \Pr(X_i > y) \\
+\intertext{Due to identical distributions (iid implies identical distributions):}
+F_Y(y) &= 1 - \left[\Pr(X > y)\right]^{n} \\
+&= 1 - \left[ 1 - \Pr(X \leq y) \right]^{n} \\
+&= 1 - \left[ 1 - F_X(y) \right]^{n} \\
+\end{align*}
+\end{proof}
+
+Having proven the proposition, let us quickly recall the setup detailed in the task description statement in order to provide a more verbal explanation.
+\begin{itemize}
+\item $n$ iid continuous random variables: $X_1, X_2, \ldots, X_n$
+\item support: $-\infty \leq a < b \leq \infty$
+\item $Y$ has the following definition: $Y = \min(X_i)$
+\end{itemize}
+We then claim (and have proven above) that the cdf of $Y$ can be expressed as $F_Y(y) = 1 - [1-F_X(y)]^n$ for $y \in (a,b)$. Let us now explain why this is the case. $F_Y(y)$ refers to the probability that the random variable $Y$ is less than or equal to a value $y$. According to our definition of $Y$ this is equivalent to the probability that the smallest realization of our $n$ random variables ($X_1, X_2, \ldots, X_n$) is less than $y$. Since it is not immediately obvious how to compute this, let us use some basic properties from probability theory. We conclude - from the basic axioms of probability - that we can express the probability that $\min(X_i)$ is less to or equal than $y$ as the difference between one (the certain event) and the complement of our probability. Just to ensure we're on the same page (math is so much easier than prose), let us quickly state what we just argued:
+\begin{align*}
+F_Y(y) &= \Pr(Y \leq y) = 1 - \Pr(Y>y)
+\intertext{Or equivalently:}
+F_Y(y) &= \Pr(\min(X_i) \leq y) = 1 - \Pr(\min(X_i)>y) \numberthis \label{eq:8aMid}
+\end{align*}
+We now have an expression for our cdf that involves the probability that $\min(X_i)$ is greater than $y$, which is much easier to study than what we had before. The probability that the smallest realization is larger than $y$ is equivalent to the probability that every single realization is larger than $y$. Since we know $X_1, X_2, \ldots, X_n$ to be independent (thanks to them being iid), this probability is equivalent to the product of individual probabilities. We've already used the ``independence'' aspect of iid, so let us now use the ``identically distributed'' part. This means that every probability in our product is the same and we can thus use the $n^{\text{th}}$ power of an individual probability as an expression for the probability of the product. Again, let's quickly study the math:
+\begin{align*}
+\Pr(\min(X_i)>y) &= \prod_{i=1}^{n} \Pr(X_i>y) \\
+&= \left[\Pr(X>y)\right]^{n}
+\intertext{We can now use the same reasoning from before and express $\Pr(X>y)$ as $1-\Pr(X \leq y)$. The probability that a random variable $X$ is less than or equal to a value $y$ can - of course - be written as $F_X(y)$. Combining these insights thus tells us that $\left[\Pr(X>y)\right]^{n}$ can be expressed in terms of the cdf of $X$:}
+\Pr(\min(X_i)>y) &= \left[\Pr(X>y)\right]^{n} \\
+&= \left[1-\Pr(X \leq y)\right]^{n} \\
+&= \left[1-F_X(y)\right]^{n} \numberthis \label{eq:8aMid2}
+\end{align*}
+Recall that we've motivated why one can express the cdf of $Y$ as the difference between one and the probability that the smallest value of $X$ is larger than $y$ (see equation \eqref{eq:8aMid}). Now we can just replace this probability with our expression that we derived (semi-verbally) above (see equation \eqref{eq:8aMid2}) and obtain the given formula. Again, in order to limit potential confusion, here's the math:
+\begin{align*}
+F_Y(y) &= 1 - \Pr(\min(X_i)>y) \\
+&= 1 - \left[1-F_X(y)\right]^{n}
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (b)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+As indicated by the question's wording, we're to use the relationship we've proven and explained in a) in order to derive the cdf of $Z = n \cdot \min(X_i)$. Hence we could just plug in $z/n$ and continue from there, but let's try to motivate the validity of this approach before implementing it. Note that this justification will - obviously - use the very same logic applied in a).
+\begin{align*}
+F_Z(z) &= \Pr(Z \leq z) \\
+&= \Pr(n \cdot \min(X_i) \leq z) \\
+&= \Pr\left(\min(X_i) \leq \frac{z}{n}\right) \\
+&= 1 - \Pr\left(\min(X_i) > \frac{z}{n}\right) \\
+&= 1 - \Pr\left( \bigcap_{i=1}^{n} (X_i > \frac{z}{n})\right) \\
+&\stackrel{iid}{=} 1 - \prod_{i=1}^{n} \Pr\left(X_i > \frac{z}{n}\right) \\
+&\stackrel{iid}{=} 1 - \left[ \Pr\left(X > \frac{z}{n}\right) \right]^{n} \\
+&= 1 - \left[1 - \Pr\left(X \leq \frac{z}{n}\right) \right]^{n} \\
+&= 1 - \left[1 - F_X\left(\frac{z}{n}\right) \right]^{n}
+\intertext{As mentioned above, we now see that it's indeed possible to plug in $z/n$ into the expression for the cdf derived in a). Let us use the fact that we assume $X \stackrel{iid}{\sim} \unif(0,1)$ and recall the cdf of a uniform distribution:}
+F_X(x) &= \begin{cases}
+0 &\mbox{for} \quad x < a\\
+\frac{x-a}{b-a} &\mbox{for} \quad a \leq x \leq b \\
+1 &\mbox{for} \quad x > b
+\end{cases}
+\intertext{Since we're dealing with a standard uniform distribution, $a=0$ and $b=1$:}
+F_X(x) &= \begin{cases}
+0 &\mbox{for} \quad x < 0\\
+x &\mbox{for} \quad 0 \leq x \leq 1 \\
+1 &\mbox{for} \quad x > 1
+\end{cases}
+\intertext{Let us now recall our expression for the cdf of $Z$ and use the cdf of $X$ stated in the preceding line. Note the change with respect to the limits for the case differentiation induced by $z/n$.}
+F_Z(z) &= 1 - \left[1 - F_X\left(\frac{z}{n}\right) \right]^{n} \\
+F_Z(z) &= \begin{cases}
+1 - \left[ 1 - 0 \right]^{n} &\mbox{for} \quad z < 0\\
+1 - \left[ 1 - \frac{z}{n} \right]^{n} &\mbox{for} \quad 0 \leq z \leq n \\
+1 - \left[ 1 - 1 \right]^{n} &\mbox{for} \quad z > n
+\end{cases} \\
+&= \begin{cases}
+1 - 1^{n} &\mbox{for} \quad z < 0\\
+1 - \left[ 1 - \frac{z}{n} \right]^{n} &\mbox{for} \quad 0 \leq z \leq n \\
+1 - 0^{n} &\mbox{for} \quad z > n
+\end{cases} \\
+&= \begin{cases}
+0 &\mbox{for} \quad z < 0\\
+1 - \left[ 1 - \frac{z}{n} \right]^{n} &\mbox{for} \quad 0 \leq z \leq n \\
+1&\mbox{for} \quad z > n
+\end{cases}
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%     (c)      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Recall our result from b):
+\begin{align*}
+F_Z(z) &= \begin{cases}
+0 &\mbox{for} \quad z < 0\\
+1 - \left[ 1 - \frac{z}{n} \right]^{n} &\mbox{for} \quad 0 \leq z \leq n \\
+1&\mbox{for} \quad z > n
+\end{cases}
+\intertext{Since this function is obviously differentiable, we can take the derivative (with respect to $z$) - using the chain rule - of both sides of the equation:}
+f_Z(z) &= \begin{cases}
+0 &\mbox{for} \quad z < 0\\
+\frac{\diff}{\diff z} \left( 1 - \left[ 1 - \frac{z}{n} \right]^{n} \right) &\mbox{for} \quad 0 \leq z \leq n \\
+0 &\mbox{for} \quad z > n
+\end{cases} \\
+&= \begin{cases}
+n\left[ 1 - \frac{z}{n} \right]^{n-1} \frac{1}{n} &\mbox{for} \quad 0 \leq z \leq n \\
+0 &\mbox{otherwise}
+\end{cases} \\
+&= \begin{cases}
+\left[ 1 - \frac{z}{n} \right]^{n-1} &\mbox{for} \quad 0 \leq z \leq n \\
+0 &\mbox{otherwise}
+\end{cases}
+\intertext{Having obtained the pdf of $Z$, let us study its behavior as $n \to \infty$:}
+\lim_{n \to \infty} f_Z(z) &= \lim_{n \to \infty} \begin{cases}
+\left[ 1 - \frac{z}{n} \right]^{n-1} &\mbox{for} \quad 0 \leq z \leq n \\
+0 &\mbox{otherwise} \end{cases} \\
+&= \begin{cases}
+\lim_{n \to \infty} \left[ 1 - \frac{z}{n} \right]^{n-1} &\mbox{for} \quad z \geq 0 \\
+0 &\mbox{for} \quad z < 0  \end{cases}
+\intertext{Note that we can rewrite $\left[ 1 - \frac{z}{n} \right]^{n-1}$ as $\left( 1 - \frac{z}{n} \right)^{n} \left( 1 - \frac{z}{n} \right)^{-1}$ and thus:}
+\lim_{n \to \infty} f_Z(z) &= \begin{cases}
+\lim_{n \to \infty} \left( 1 - \frac{z}{n} \right)^{n} \left( 1 - \frac{z}{n} \right)^{-1} &\mbox{for} \quad z \geq 0 \\
+0 &\mbox{for} \quad z < 0  \end{cases}
+\intertext{Assuming both limits exist:}
+\lim_{n \to \infty} f_Z(z) &= \begin{cases}
+\lim_{n \to \infty} \left( 1 - \frac{z}{n} \right)^{n} \lim_{n \to \infty} \left( 1 - \frac{z}{n} \right)^{-1} &\mbox{for} \quad z \geq 0 \\
+0 &\mbox{for} \quad z < 0  \end{cases}
+\intertext{Trivially, the second limit evaluates to one and thus:}
+\lim_{n \to \infty} f_Z(z) &= \begin{cases}
+\lim_{n \to \infty} \left( 1 - \frac{z}{n} \right)^{n} &\mbox{for} \quad z \geq 0 \\
+0 &\mbox{for} \quad z < 0  \end{cases}
+\intertext{We recognize the limit representation of $e^{-z}$ and have thus finished our derivation:}
+\lim_{n \to \infty} f_Z(z) &= \begin{cases}
+e^{-z} &\mbox{for} \quad z \geq 0 \\
+0 &\mbox{for} \quad z < 0  \end{cases}
+\intertext{Or more compactly, using an indicator function:}
+\lim_{n \to \infty} f_Z(z) &= e^{-z} \mathbb{I}_{\left[0, \infty\right)(z)}
+\end{align*}
+We've just shown that this approaches the pdf of an exponential with $\lambda = 1$.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 9 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Let $X \sim \exp(\lambda)$ and $Y = \exp(X) = e^{X}$. This implies that $X = \log Y$ (we'll be using $\log$ to refer to the natural logarithm). We're now tasked with deriving the pdf of $Y$. Let's apply what we've shown to be true (see question 6i)) with respect to univariate transformations.
+\begin{align*}
+f_Y(y) &= f_X(x) \left| \frac{\diff x}{\diff y} \right| \\
+&= f_X(\log y) \left| \frac{\diff x}{\diff y} \right| \numberthis \label{eq:9:univ}
+\intertext{Recall the pdf of an exponentially distributed random variable $X$.}
+f_X(x) &= \begin{cases}
+\lambda e^{-\lambda x} &\mbox{for} \quad x \geq 0 \\
+0 &\mbox{for} \quad x < 0
+\end{cases} \\
+&= \lambda e^{-\lambda x} \, \mathbb{I}_{\left[0, \infty \right)}(x)
+\intertext{Inserting this density into equation \eqref{eq:9:univ} yields:}
+f_Y(y) &= \lambda e^{-\lambda \log y} \, \mathbb{I}_{\left[0, \infty \right)}(\log y) \left| \frac{\diff x}{\diff y} \right| \\
+&= \lambda e^{-\lambda \log y} \, \mathbb{I}_{\left[0, \infty \right)}(\log y) \frac{1}{y} \\
+&= \lambda e^{-\lambda \log y} \frac{1}{y} \, \mathbb{I}_{\left[1, \infty \right)}(y) \\
+&= \lambda \left( e^{\log y} \right)^{-\lambda} \frac{1}{y} \, \mathbb{I}_{\left[1, \infty \right)}(y) \\
+&= \lambda y^{-\lambda} \frac{1}{y} \, \mathbb{I}_{\left[1, \infty \right)}(y) \\
+&= \lambda y^{-\lambda-1} \, \mathbb{I}_{\left[1, \infty \right)}(y) \\
+&= \lambda y^{-(\lambda+1)} \, \mathbb{I}_{\left[1, \infty \right)}(y) \\
+\end{align*}
+Having derived the pdf, we're in a position to compute the $m^{\text{th}}$ moment ($\E{Y^{m}}$).
+\begin{align*}
+\E{Y^{m}} &= \int_{-\infty}^{\infty} f_Y(y) y^{m} \, \diff y \\
+&= \int_{-\infty}^{\infty} \lambda y^{-(\lambda+1)} y^{m} \, \mathbb{I}_{\left[1, \infty \right)}(y) \, \diff y \\
+&= \int_{1}^{\infty} \lambda y^{-(\lambda+1)} y^{m} \, \diff y \\
+&= \lambda  \int_{1}^{\infty} y^{m-(\lambda+1)} \, \diff y \\
+&= \lambda  \int_{1}^{\infty} y^{m-\lambda-1} \, \diff y \\
+&= \lambda  \left[ \frac{1}{m-\lambda} y^{m-\lambda} \right]_{1}^{\infty} \\
+&= \frac{\lambda}{m-\lambda} \left[ y^{m-\lambda} \right]_{1}^{\infty} \\
+&= \frac{\lambda}{m-\lambda} \left( \lim_{y \to \infty} y^{m-\lambda} - 1 \right)
+\intertext{We now need to differentiate two scenarios. If $m < \lambda$:}
+\E{Y^{m}} &= \frac{\lambda}{m-\lambda} \left( \lim_{y \to \infty} y^{m-\lambda} - 1 \right) \\
+&= \frac{\lambda}{m-\lambda} \left( 0 - 1 \right) \\
+&= - \frac{\lambda}{m-\lambda} \\
+&= \frac{\lambda}{\lambda-m}
+\intertext{If $m \geq \lambda$, the $m^{\text{th}}$ moment does not exist as the limit $\lim_{y \to \infty} y^{m-\lambda}$ is not finite.}
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 10 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Let us consider a random variable $X \sim t_n$ (Student's $t$ distribution with $n$ degrees of freedom) with the following density (see question 5):
+\begin{equation*}
+f_X(x;n) = \frac{\Gamma(\frac{n+1}{2}) n^{\frac{n}{2}}}{\sqrt{\pi} \ \Gamma (\frac{n}{2})} (n+x^2)^{- \frac{n+1}{2}} = \frac{n^{-\frac{1}{2}}}{B\left(\frac{n}{2}, \frac{1}{2}\right)} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}}
+\end{equation*}
+Since the question's wording already implies a certain approach to tackle the problem, we'll adapt it here and refrain from using the relationship between a Student's t and a Chi-square distribution in conjunction with the continuous mapping theorem, which would have resulted in a (possibly) nicer proof. As the question description statement already mentiones Stirling's approximation, it is used without proof.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] The kernel and constant of integration of a Student's $t$ approach that of a normal:
+\begin{equation*}
+\lim_{n \to \infty} f_X(x;n) = \frac{e^{-\frac{1}{2}x^{2}}}{\sqrt{2\pi}}
+\end{equation*}
+\end{labeling}
+\begin{proof}
+As indicated in the problem description statement, this proof contains two parts. Let us start by showing that the kernel approaches that of a normal. In order to do this, we'll first rearrange the pdf stated above.
+\begin{align*}
+f_X(x;n) &= \frac{n^{-\frac{1}{2}}}{B\left(\frac{n}{2}, \frac{1}{2}\right)} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} \\
+&= \frac{1}{ \sqrt{n} B\left(\frac{n}{2}, \frac{1}{2}\right)} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}}
+\intertext{Using the relationship between the beta and gamma function proven in 5c):}
+f_X(x;n) &= \dfrac{1}{\sqrt{n} \dfrac{ \Gamma\left( \frac{n}{2} \right) \Gamma\left( \frac{1}{2} \right) } {\Gamma\left( \frac{n}{2} + \frac{1}{2}\right)} } \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} \\
+f_X(x;n) &= \frac{\Gamma\left( \frac{n}{2} + \frac{1}{2}\right)}{\sqrt{n} \Gamma\left( \frac{n}{2} \right) \Gamma\left( \frac{1}{2} \right)} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}}
+\intertext{Recall that we've shown that $\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}$ in question 1 and thus:}
+f_X(x;n) &= \frac{\Gamma\left( \frac{n}{2} + \frac{1}{2}\right)}{\sqrt{\pi n} \Gamma\left( \frac{n}{2} \right)} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} \\
+&= \frac{\Gamma\left( \frac{n+1}{2} \right)}{\sqrt{\pi n} \Gamma\left( \frac{n}{2} \right)} \underbrace{\left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}}}_{\text{Kernel}}
+\intertext{Let us now show that this kernel approaches (as $n \to \infty$) a standard normal's kernel, which is equal to $e^{-\frac{x^{2}}{2}}$.}
+\lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} &= \lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n}{2}} \left(1+\frac{x^{2}}{n}\right)^{-\frac{1}{2}}
+\intertext{Assuming both limits exist:}
+\lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} &= \lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n}{2}} \underbrace{\lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{1}{2}}}_{=1} \\
+&= \lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n}{2}}
+\intertext{This already looks fairly close to the limit representation of Euler's number, so let's try to get there.}
+\lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} &= \lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n}{2} \cdot \frac{x^{2}}{x^{2}}} \\
+&= \lim_{n \to \infty} \left[\left(1+\frac{x^{2}}{n}\right)^{\frac{n}{x^{2}}}\right]^{-\frac{x^{2}}{2}}
+\intertext{Let us substitute $u = \frac{n}{x^{2}}$, which implies $x^{2} = \frac{n}{u}$, and hence we can use the aforementioned limit representation of Euler's number (note that $n \to \infty$ implies $u \to \infty$):}
+\lim_{n \to \infty} \left(1+\frac{x^{2}}{n}\right)^{-\frac{n+1}{2}} &= \lim_{u \to \infty} \left[\left(1+\frac{1}{u}\right)^{u}\right]^{-\frac{x^{2}}{2}} \\
+&= e^{-\frac{x^{2}}{2}}
+\intertext{We've now proven that the kernel indeed approaches that of the normal. All that's left to show is that the constant of integration approaches $1/\sqrt{2\pi}$, which is the standard normal's constant of integration. Let us continue by taking the limit of the Student's $t$ constant of integration and applying Stirling's approximation.}
+\lim_{n \to \infty} \frac{\Gamma\left( \frac{n+1}{2} \right)}{\sqrt{\pi n} \Gamma\left( \frac{n}{2} \right)}
+&\approx \lim_{n \to \infty} \dfrac{ \cancel{\sqrt{2\pi}} \left(\dfrac{n+1}{2}\right)^{\frac{n}{2}} e^{-\frac{n+1}{2}} }{ \sqrt{\pi n} \cancel{\sqrt{2\pi}} \left(\dfrac{n}{2}\right)^{\frac{n-1}{2}} e^{-\frac{n}{2}} } \\
+&= \lim_{n \to \infty} \dfrac{ \left(\dfrac{n+1}{2}\right)^{\frac{n}{2}} \cancel{e^{-\frac{n}{2}}} e^{-\frac{1}{2}} }{ \sqrt{\pi n}  \left(\dfrac{n}{2}\right)^{\frac{n-1}{2}} \cancel{e^{-\frac{n}{2}}} } \\
+&= \lim_{n \to \infty} \dfrac{ \left(\dfrac{n+1}{2}\right)^{\frac{n}{2}} }{ \sqrt{\pi n} e^{\frac{1}{2}} \left(\dfrac{n}{2}\right)^{\frac{n-1}{2}}  } \\
+&= \lim_{n \to \infty} \dfrac{ \left(\dfrac{n+1}{2}\right)^{\frac{n}{2}} }{ \sqrt{\pi n e} \left(\dfrac{n}{2}\right)^{\frac{n-1}{2}}  } \\
+&= \lim_{n \to \infty} \dfrac{ \left(\dfrac{n+1}{2}\right)^{\frac{n}{2}} }{ \sqrt{\pi n e} \left(\dfrac{n}{2}\right)^{\frac{n}{2}} \left(\dfrac{n}{2}\right)^{-\frac{1}{2}}  } \\
+&= \lim_{n \to \infty} \dfrac{ \left(\dfrac{n}{2}\right)^{\frac{1}{2}} \left(\dfrac{n+1}{2}\right)^{\frac{n}{2}} }{ \sqrt{\pi n e} \left(\dfrac{n}{2}\right)^{\frac{n}{2}} } \\
+&= \lim_{n \to \infty} \dfrac{ \left(\dfrac{n+1}{2}\right)^{\frac{n}{2}} }{ \sqrt{2\pi e} \left(\dfrac{n}{2}\right)^{\frac{n}{2}} } \\
+&= \lim_{n \to \infty} \frac{1}{\sqrt{2\pi e}} \left( \dfrac{\dfrac{n+1}{\cancel{2}}}{\dfrac{n}{\cancel{2}}} \right)^{\frac{n}{2}} \\
+&= \lim_{n \to \infty} \frac{1}{\sqrt{2\pi e}} \left( \frac{n+1}{n} \right)^{\frac{n}{2}} \\
+&= \frac{1}{\sqrt{2\pi e}} \lim_{n \to \infty} \left( \frac{n+1}{n} \right)^{\frac{n}{2}} \\
+&= \frac{1}{\sqrt{2\pi e}} \lim_{n \to \infty} \sqrt{\left( \frac{n+1}{n} \right)^{n}} \\
+&= \frac{1}{\sqrt{2\pi e}} \lim_{n \to \infty} \sqrt{\left( 1 + \frac{1}{n} \right)^{n}}
+\intertext{Using the limit representation of Euler's number once again:}
+\lim_{n \to \infty} \frac{\Gamma\left( \frac{n+1}{2} \right)}{\sqrt{\pi n} \Gamma\left( \frac{n}{2} \right)} &\approx \frac{1}{\sqrt{2\pi e}} \sqrt{e} \\
+&= \frac{1}{\sqrt{2 \pi}}
+\intertext{Now we've also shown that the constant of integration approaches that of a standard normal and hence proven the entire proposition.}
+\end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 11 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] The finiteness of $\E{X}$ is equivalent to the finiteness of $\E{ \lvert X \rvert }$
+\begin{equation*}
+\lvert \E{X} \rvert < \infty \iff \E{ \lvert X \rvert } < \infty
+\end{equation*}
+\end{labeling}
+\begin{proof}
+Let us state the following two definitions
+\begin{align*}
+X^{+} &= X \mathbb{I}(X \geq 0) \\
+X^{-} &= -X \mathbb{I}(X < 0)
+\intertext{This means that both $X^{+}$ and $X^{-}$ are non-negative and enables us to express $X$ and $\lvert X \rvert$ as follows:}
+X &= X^{+} - X^{-} \numberthis \label{eq:11a} \\
+\lvert X \rvert &= X^{+} + X^{-} \numberthis \label{eq:11b}
+\intertext{Proving the proposition requires us to show two implications, as the proposition contains an equivalence relation. Let us start by proving the following direction first, as it is easier:}
+\E{ \lvert X \rvert } < \infty &\Rightarrow \lvert \E{X} \rvert < \infty
+\intertext{Beginning with our expression for $X$ given by equation \eqref{eq:11a}:}
+X &= X^{+} - X^{-} \\
+\iff \E{X} &= \E{ X^{+} - X^{-} } \\
+&= \E{ X^{+} } - \E{ X^{-} }
+\intertext{Taking the absolute value of both sides of the equation produces:}
+\lvert \E{X} \rvert &= \lvert \E{ X^{+} } - \E{ X^{-} } \rvert
+\intertext{Applying the famous triangle inequality ($ \lvert a-b \rvert \leq \lvert a \rvert + \lvert b \rvert $) yields:}
+\lvert \E{X} \rvert &\leq \lvert \E{ X^{+} } \rvert + \lvert \E{ X^{-} } \rvert
+\intertext{As mentioned above, $X^{+}$ and $X^{-}$ are non-negative and thus - by the definition of the expected value - $\E{ X^{+} }$ and $\E{ X^{-} }$ are non-negative as well. Hence, we're allowed to omit the absolute value signs around the expected values on the right hand side of the equation:}
+\lvert \E{X} \rvert &\leq \E{ X^{+} } + \E{ X^{-} } \\
+&= \E{ X^{+} + X^{-} } \\
+&= \E{ \lvert X \rvert }
+\intertext{We have thus shown:}
+\lvert \E{X} \rvert &\leq \E{ \lvert X \rvert }
+\intertext{If $\E{ \lvert X \rvert } < \infty$, $\lvert \E{X} \rvert$ must be finite as well, as it is less than or equal to $\E{ \lvert X \rvert }$.}
+\E{ \lvert X \rvert } < \infty &\Rightarrow \lvert \E{X} \rvert < \infty
+\end{align*}
+We have thus proven one of the two implications and are ready to move on to the trickier part of this proof. Let us now show the following implication:
+\begin{align*}
+\lvert \E{X} \rvert < \infty &\Rightarrow \E{ \lvert X \rvert } < \infty
+\intertext{Let's start by assuming that $\lvert \E{X} \rvert < \infty$ is indeed true and attempt to show that this indeed implies the desired result. In order to simplify our notation and enhance readability, let us denote the statement $\lvert \E{X} \rvert < \infty$ as $A$.}
+A &\Rightarrow -\infty < \E{X} < \infty
+\intertext{Using the expression for $X$ given by equation \eqref{eq:11a}:}
+A &\Rightarrow -\infty < \E{ X^{+} - X^{-} } < \infty \\
+\iff A &\Rightarrow -\infty < \E{ X^{+} } - \E{ X^{-} } < \infty \\
+\iff A &\Rightarrow -\infty < \E{ X^{+} } + \E{- X^{-} } < \infty
+\intertext{Given our assumption that $\lvert \E{X} \rvert < \infty$ is true, we can obviosuly conclude:}
+A &\Rightarrow \left( -\infty < \E{ X^{+} } < \infty \wedge -\infty < \E{-X^{-} } < \infty \right)
+\intertext{If $-\infty < \E{-X^{-} } < \infty$ holds true, so does $-\infty < \E{X^{-} } < \infty$ and hence:}
+A &\Rightarrow \left( -\infty < \E{ X^{+} } < \infty \wedge -\infty < \E{X^{-} } < \infty \right)
+\intertext{Since $\E{ X^{+} } < \infty$ and $\E{X^{-} } < \infty$, we can reverse our separation and deduce that their sum is finite as well:}
+A &\Rightarrow \E{ X^{+} } + \E{ X^{-} } < \infty \\
+\iff A &\Rightarrow \E{ X^{+} + X^{-} } < \infty
+\intertext{Using our expression for $\lvert X \rvert$ from equation \eqref{eq:11b}:}
+A &\Rightarrow \E{ \lvert X \rvert } < \infty
+\intertext{We can now recall our definition of $A$ and realize that we've proven the second implication and thus the entire proposition.}
+\lvert \E{X} \rvert < \infty &\Rightarrow \E{ \lvert X \rvert } < \infty
+\end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 12 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+In the context of lower partial moments, we require an expression for
+\begin{equation}
+T_{h,c}(X) = \int_{-\infty}^c x^h f_X(x) \, \diff x
+\label{eq:12a}
+\end{equation}
+Let $Z \sim \text{N}(0,1)$ and assume $c < 0$ and $h \in \mathbb{N}$. We're now asked to prove the following proposition.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}]
+\begin{equation*}
+T_{h,c}(Z) = \frac{(-1)^h 2^{h/2-1}}{\sqrt{\pi}} \left[\Gamma\left(\frac{h+1}{2}\right) - \Gamma_{c^2/2}\left(\frac{h+1}{2}\right)\right]
+\end{equation*}
+\end{labeling}
+\begin{proof}
+Since $Z$ is (standard) normally distributed, let us recall the pdf of a standard normal:
+\begin{align*}
+f_Z(z) &= \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}}
+\intertext{Plugging this density into equation \eqref{eq:12a}}
+T_{h,c}(Z) &= \int_{-\infty}^c z^h f_Z(z) \, \diff z \\
+&= \int_{-\infty}^c z^h \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}} \, \diff z \\
+&= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^c z^h e^{-\frac{z^2}{2}} \, \diff z
+\intertext{Since $c$ is assumed to be less than zero, we can rewrite our integral as follows:}
+T_{h,c}(Z) &= \frac{1}{\sqrt{2\pi}} \left[ \int_{-\infty}^0 z^h e^{-\frac{z^2}{2}} \, \diff z - \int_{c}^0 z^h e^{-\frac{z^2}{2}} \, \diff z \right] \\
+&= \frac{1}{\sqrt{2\pi}} \left[ \int_{-\infty}^0 z^h e^{-\frac{z^2}{2}} \, \diff z + \int_{0}^c z^h e^{-\frac{z^2}{2}} \, \diff z \right]
+\intertext{Due to the symmetric nature of a normal's pdf:}
+T_{h,c}(Z) &= \frac{1}{\sqrt{2\pi}} \left[ -\int_{0}^{\infty} z^h e^{-\frac{z^2}{2}} \, \diff z + \int_{0}^c z^h e^{-\frac{z^2}{2}} \, \diff z \right]
+\end{align*}
+\begin{align*}
+\intertext{We'll now perform a u-substitution with $u = \frac{z^2}{2}$, which implies, assuming (wlg) a negative value for z, $z = (-1)(2u)^{1/2}$. Furthermore: $\diff z = (-1)(2u)^{-1/2} \diff u$. Using said substitution then yields:}
+T_{h,c}(Z) &= \frac{1}{\sqrt{2\pi}} \left[ \cancel{-} \int^{\infty}_0 \left((-1)(2u)^{1/2}\right)^h e^{-u} \cancel{(-1)}(2u)^{-1/2} \diff u \right. \\
+		           & \qquad \qquad + \left. \int^{\frac{c^{2}}{2}}_0 \left((-1)(2u)^{1/2}\right)^h e^{-u} (-1)(2u)^{-1/2} \diff u \right] \\
+&= \frac{1}{\sqrt{2\pi}}\left[ \int^{\infty}_0 (-1)^h (2u)^{h/2} e^{-u} (2u)^{-1/2} \diff u  - \int^{\frac{c^{2}}{2}}_0 (-1)^h (2u)^{h/2} e^{-u} (2u)^{-1/2} \diff u \right]
+\intertext{Combining the various $2u$ terms simplifies our expression even further:}
+T_{h,c}(Z) &= \frac{1}{\sqrt{2\pi}}\left[ \int^{\infty}_0 (-1)^h (2u)^{\frac{h-1}{2}} e^{-u} \diff u  - \int^{\frac{c^{2}}{2}}_0 (-1)^h (2u)^{\frac{h-1}{2}} e^{-u} \diff u \right] \\
+&= \frac{1}{\sqrt{2\pi}}\left[ (-1)^h \int^{\infty}_0 (2u)^{\frac{h-1}{2}} e^{-u} \diff u  - (-1)^h \int^{\frac{c^{2}}{2}}_0 (2u)^{\frac{h-1}{2}} e^{-u} \diff u \right] \\
+&= \frac{1}{\sqrt{2\pi}}\left[ (-1)^h \int^{\infty}_0 2^{\frac{h-1}{2}} u^{\frac{h-1}{2}} e^{-u} \diff u  - (-1)^h \int^{\frac{c^{2}}{2}}_0 2^{\frac{h-1}{2}} u^{\frac{h-1}{2}} e^{-u} \diff u \right] \\
+&= \frac{1}{\sqrt{2\pi}}\left[ (-1)^h 2^{\frac{h-1}{2}} \int^{\infty}_0 u^{\frac{h-1}{2}} e^{-u} \diff u  - (-1)^h 2^{\frac{h-1}{2}} \int^{\frac{c^{2}}{2}}_0 u^{\frac{h-1}{2}} e^{-u} \diff u \right] \\
+&= \frac{1}{\sqrt{2\pi}}\left[ (-1)^h 2^{\frac{h-1}{2}} \left( \int^{\infty}_0 u^{\frac{h-1}{2}} e^{-u} \diff u  - \int^{\frac{c^{2}}{2}}_0 u^{\frac{h-1}{2}} e^{-u} \diff u \right) \right] \\
+&= \frac{(-1)^h 2^{\frac{h-1}{2}}}{\sqrt{2\pi}}\left[ \int^{\infty}_0 u^{\frac{h-1}{2}} e^{-u} \diff u  - \int^{\frac{c^{2}}{2}}_0 u^{\frac{h-1}{2}} e^{-u} \diff u \right]
+\intertext{We're now almost able to detect a gamma function and an incomplete gamma function. In order to finalize our proof, realize that we can express $\frac{h-1}{2}$ as follows:}
+\frac{h-1}{2} &= \frac{h+1}{2} - \frac{2}{2} = \frac{h+1}{2}-1
+\intertext{Hence:}
+T_{h,c}(Z) &= \frac{(-1)^h 2^{\frac{h-1}{2}}}{\sqrt{2\pi}}\left[ \int^{\infty}_0 u^{\frac{h+1}{2}-1} e^{-u} \diff u  - \int^{\frac{c^{2}}{2}}_0 u^{\frac{h+1}{2}-1} e^{-u} \diff u \right]
+\intertext{Applying the integral definitions of the gamma function and the incomplete gamma function yields the final result:}
+T_{h,c}(Z) &= \frac{(-1)^h \, 2^{h/2-1}}{\sqrt{\pi}} \left[ \Gamma\left(\frac{h+1}{2}\right) - \Gamma_{c^2/2} \left(\frac{h+1}{2}\right)\right]
+\end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 13 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+For $m>2$, let $B \sim \text{Beta}((m-1)/2,(m-1)/2)$ independent of $X \sim \chi_m^2$ with the following pdf:
+\begin{equation*}
+f_X(x;m) = \frac{1}{2^{m/2} \Gamma(m/2)} x^{m/2-1} e^{-x/2} \, \mathbb{I}_{(0,\infty)}(x).
+\end{equation*}
+Let us further define the following three random variables:
+\begin{align*}
+S &= 2B-1 \\
+Y &= \sqrt{X} \\
+P &= SY
+\end{align*}
+In order to derive and integral expression for the density of $P$, we first need to compute the pdfs of $S$ and $Y$, as the product of these two random variables defines $P$. Luckily, obtaining these two pdfs is a fairly easy task as we can apply the simple univariate transformation formula proven in question 6 (a). Let us start by deriving $f_S(s)$.
+\begin{align*}
+f_S(s;m) &= f_B(b;m) \left\lvert \frac{\diff b}{\diff s} \right\rvert
+\intertext{Note that we can express $s$ as $s = 2b-1$ and $b$ as $b = \frac{s+1}{2}$. This also implies that $\frac{\diff b}{\diff s} = \frac{1}{2}$. Hence:}
+f_S(s;m) &= f_B\left(\frac{s+1}{2};m\right) \left\lvert \frac{1}{2} \right\rvert \\
+&= f_B\left(\frac{s+1}{2};m\right) \frac{1}{2} \numberthis \label{eq:13:a}
+\intertext{Since $B$ follows a beta distribution with $\alpha = \beta = (m-1)/2$, let us state the corresponding pdf:}
+f_B(b;m) &= \frac{b^{\frac{m-1}{2}-1}(1-b)^{\frac{m-1}{2}-1}}{B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(0,1)}(b)
+\intertext{Recalling that $b = \frac{s+1}{2}$:}
+f_B\left(\frac{s+1}{2};m\right) &= \frac{\left(\frac{s+1}{2}\right)^{\frac{m-1}{2}-1}\left(1-\frac{s+1}{2}\right)^{\frac{m-1}{2}-1}}{B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(0,1)}\left(\frac{s+1}{2}\right) \\
+&= \frac{\left(\frac{s+1}{2}\right)^{\frac{m-1}{2}-1}\left(1-\frac{s+1}{2}\right)^{\frac{m-1}{2}-1}}{B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(-1,1)}\left(s\right) \\
+&= \frac{\left(\frac{s+1}{2}\right)^{\frac{m-3}{2}}\left(1-\frac{s+1}{2}\right)^{\frac{m-3}{2}}}{B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(-1,1)}\left(s\right) \\
+\intertext{Let us now plug this pdf into equation \eqref{eq:13:a}.}
+f_S(s;m) &= f_B\left(\frac{s+1}{2};m\right) \frac{1}{2} \\
+&= \frac{1}{2} \frac{\left(\frac{s+1}{2}\right)^{\frac{m-3}{2}}\left(1-\frac{s+1}{2}\right)^{\frac{m-3}{2}}}{B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(-1,1)}\left(s\right) \\
+&= \frac{ \frac{1}{2} \left(\frac{1}{2}\right)^{\frac{m-3}{2}} \left(s+1\right)^{\frac{m-3}{2}} \left(\frac{1}{2}\right)^{\frac{m-3}{2}} \left(2-(s+1)\right)^{\frac{m-3}{2}}} {B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(-1,1)}\left(s\right) \\
+&= \frac{ 2^{2-m} \left(s+1\right)^{\frac{m-3}{2}} \left(2-(s+1)\right)^{\frac{m-3}{2}}} {B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(-1,1)}\left(s\right) \\
+&= \frac{ 2^{2-m} \left((s+1)(2-s-1))\right)^{\frac{m-3}{2}}} {B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(-1,1)}\left(s\right) \\
+&= \frac{ 2^{2-m} \left(2s-s^{2}-s+2-s-1)\right)^{\frac{m-3}{2}}} {B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \mathbb{I}_{(-1,1)}\left(s\right) \\
+&= \frac{ 2^{2-m} } {B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \left(1-s^{2}\right)^{\frac{m-3}{2}} \, \mathbb{I}_{(-1,1)}\left(s\right) \\
+\end{align*}
+Having derived the density of $S$, let us compute the density of $Y$.
+\begin{align*}
+f_Y(y;m) &= f_X(x;m) \left\lvert \frac{\diff x}{\diff y} \right\rvert
+\intertext{Note that we can express $y$ as $y = \sqrt{x}$ and $x$ as $x = y^{2}$. This also implies that $\frac{\diff x}{\diff y} = 2y$. Hence:}
+f_Y(y;m) &= f_X(y^{2};m) 2y
+\intertext{Using the pdf of $X$ we stated at the beginning and recalling that $x = y^{2}$:}
+f_Y(y;m) &= 2y \frac{1}{2^{m/2} \Gamma(m/2)} (y^{2})^{m/2-1} e^{-y^{2}/2} \, \mathbb{I}_{(0,\infty)}(y^{2}) \\
+&= \frac{2y}{2^{m/2} \Gamma(m/2)} y^{2m/2-2} e^{-y^{2}/2} \, \mathbb{I}_{(0,\infty)}(y) \\
+&= \frac{2y}{2^{m/2} \Gamma(m/2)} y^{m-2} e^{-y^{2}/2} \, \mathbb{I}_{(0,\infty)}(y) \\
+&= \frac{2}{2^{m/2} \Gamma(m/2)} y^{m-1} e^{-y^{2}/2} \, \mathbb{I}_{(0,\infty)}(y) \\
+&= \frac{2^{1-m/2}}{\Gamma(m/2)} y^{m-1} e^{-y^{2}/2} \, \mathbb{I}_{(0,\infty)}(y) \\
+\end{align*}
+We're now in a position to derive the density of $P$. This is slightly trickier than the two derivations we just did as we're now dealing with a product ($P=YS$) of two random variables. In order to use a bivariate transformation, a second random variable $T$ - acting as a dummy - is required, since $P$ is univariate and not bivariate. By carefully choosing our dummy (e.g. $T=S$), we create a bivariate structure and can thus perform a bivariate transformation. Note that $(p,t) = (g_1(y,s), g_2(y,s)) = (ys, s)$ is a bijection where the inverse transform is $(y,s) = (g_1^{-1}(p,t), g_2^{-1}(p,t)) = (\frac{p}{t}, t)$. It is now possible to state the joint density of $P$ and $T$ as follows:
+\begin{align*}
+f_{P,T}(p,t;m) &= f_{Y,S}(y,s;m) \lvert \det \mathbf{J} \rvert
+\intertext{Here, $\lvert \det \mathbf{J} \rvert$ refers to the absolute value of the determinant of the Jacobian matrix:}
+\mathbf{J} &= \begin{bmatrix}
+    \dfrac{\partial y}{\partial p} & \dfrac{\partial y}{\partial t} \\[3ex]
+    \dfrac{\partial s}{\partial p} & \dfrac{\partial s}{\partial t}
+\end{bmatrix} = \begin{bmatrix}
+    \dfrac{1}{t} & -pt^{-2} \\[3ex]
+    0 & 1    
+\end{bmatrix} \\
+\lvert \det \mathbf{J} \rvert &= \left \lvert \left(\frac{1}{t} \cdot 1 - 0 \cdot (-pt^{-2})\right) \right \rvert = \left \lvert \frac{1}{t} \right \rvert
+\intertext{Inserting this into our joint density yields:}
+f_{P,T}(p,t;m) &= f_{Y,S}(y,s;m) \left \lvert \frac{1}{t} \right \rvert \\
+&= f_{Y,S}\left(\frac{p}{t},t;m\right) \lvert t \rvert^{-1}
+\intertext{While we now have an expression for the joint density of $P$ and our dummy $T$, we're only interested in the marginal density of $P$. Let us thus integrate our joint density over $t$.}
+f_{P}(p;m) &= \int_{-\infty}^{\infty} \lvert t \rvert^{-1} f_{Y,S}\left(\frac{p}{t},t;m\right) \, \diff t
+\intertext{Given that the joint pdf of $Y$ and $S$ assigns densities to pairs of $Y$ and $S$, only the intersection of their respective support is of any consequence. Hence, we can adjust the integral's bounds as follows:}
+f_{P}(p;m) &= \int_{0}^{1} \frac{1}{t} f_{Y,S}\left(\frac{p}{t},t;m\right) \, \diff t
+\intertext{Note that the new bounds of integration allow us to drop the absolute value on $t$ as it will never be negative. Since $X$ and $B$ are independent, $S=2B-1$ and $Y=\sqrt{X}$ are independent as well, which means we can express their joint density as the product of their marginals:}
+f_{P}(p;m) &= \int_{0}^{1} \frac{1}{t} f_Y\left(\frac{p}{t};m\right) f_S(t;m) \, \diff t
+\end{align*}
+We can now insert the pdfs of $Y$ and $S$ without the indicator functions as we've already adjusted the bounds of integration.
+\begin{align*}
+f_{P}(p;m) &= \int_{0}^{1} \frac{1}{t} \underbrace{\frac{2^{1-m/2}}{\Gamma\left(\frac{m}{2}\right)} \left(\frac{p}{t}\right)^{m-1} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}}}_{f_Y(p/t;m)} \underbrace{\frac{ 2^{2-m} } {B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \left(1-t^{2}\right)^{\frac{m-3}{2}}}_{f_S(t;m)} \, \diff t \\
+&= \frac{2^{1-m/2}}{\Gamma\left(\frac{m}{2}\right)} \frac{ 2^{2-m} } {B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{m-1} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \left(1-t^{2}\right)^{\frac{m-3}{2}} \, \diff t \\
+&= \frac{2^{1-m/2+2-m}}{\Gamma\left(\frac{m}{2}\right) B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{m-1} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \left(1-t^{2}\right)^{\frac{m-3}{2}} \, \diff t \\
+&= \frac{2^{3(1-m/2)}}{\Gamma\left(\frac{m}{2}\right) B\left(\frac{m-1}{2},\frac{m-1}{2} \right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{m-1} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \left(1-t^{2}\right)^{\frac{m-3}{2}} \, \diff t
+\intertext{As we already have a gamma function in our expression, let us convert the beta function using the relationship proven in question 2(c):}
+f_{P}(p;m) &= \frac{2^{3(1-m/2)} \Gamma\left(\frac{m-1}{2}+\frac{m-1}{2}\right) }{\Gamma\left(\frac{m}{2}\right) \Gamma\left(\frac{m-1}{2}\right) \Gamma\left(\frac{m-1}{2}\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{m-1} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \left(1-t^{2}\right)^{\frac{m-3}{2}} \, \diff t \\
+&= \frac{2^{3(1-m/2)} \Gamma\left(m-1\right) }{\Gamma\left(\frac{m}{2}\right) \Gamma\left(\frac{m-1}{2}\right) \Gamma\left(\frac{m-1}{2}\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{m-1} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \left(1-t^{2}\right)^{\frac{m-3}{2}} \, \diff t
+\end{align*}
+Since we now have a general expression for the pdf of $P$, let us prove that in the case of $m=3$, $P$ follows a standard normal distribution ($P \sim \text{N}(0,1)$).
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] If $m=3$, $P$ is standard normally distributed and thus has the folowing density:
+\begin{equation*}
+f_P(p;3) = \frac{1}{\sqrt{2\pi}} e^{-\frac{p^2}{2}}
+\end{equation*}
+\end{labeling}
+\begin{proof}
+\begin{align*}
+f_P(p;3) &= \frac{2^{3(1-3/2)} \Gamma\left(3-1\right) }{\Gamma\left(\frac{3}{2}\right) \Gamma\left(\frac{3-1}{2}\right) \Gamma\left(\frac{3-1}{2}\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{3-1} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \left(1-t^{2}\right)^{\frac{3-3}{2}} \, \diff t \\
+&= \frac{2^{-3/2} \Gamma\left(2\right) }{\Gamma\left(\frac{3}{2}\right) \Gamma\left(1\right) \Gamma\left(1\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{2} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \, \diff t
+\intertext{Recall - as shown in question 1(b) - that $\Gamma(1)=1$:}
+f_P(p;3) &= \frac{2^{-3/2} \Gamma\left(2\right) }{\Gamma\left(\frac{3}{2}\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{2} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \, \diff t
+\intertext{Applying the gamma difference equation proven in 2(b) then yields:}
+f_P(p;3) &= \frac{2^{-3/2} \cancel{1 \cdot \Gamma\left(1\right)} }{\frac{1}{2}\Gamma\left(\frac{1}{2}\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{2} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \, \diff t \\
+&= \frac{1}{2^{3/2}2^{-1}\Gamma\left(\frac{1}{2}\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{2} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \, \diff t \\
+&= \frac{1}{\sqrt{2}\Gamma\left(\frac{1}{2}\right)} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{2} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \, \diff t \\
+\intertext{Using the fact that $\Gamma(1/2) = \sqrt{\pi}$ as shown in question 1:}
+f_P(p;3)  &= \frac{1}{\sqrt{2\pi}} \int_{0}^{1} \frac{1}{t} \left(\frac{p}{t}\right)^{2} e^{-\frac{1}{2}\left(\frac{p}{t}\right)^{2}} \, \diff t
+\intertext{Let us now perform a u-substituion with $u = -\frac{1}{2}\left(\frac{p}{t}\right)^{2}$, which implies $\diff u = \frac{1}{t} \left( \frac{p}{t} \right)^{2} \diff t$ and hence:}
+f_P(p;3)  &= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{-p^{2}/2} e^{u} \, \diff u \\
+&= \frac{1}{\sqrt{2\pi}} \left[ e^{u} \right]_{-\infty}^{-p^{2}/2} \\
+&= \frac{1}{\sqrt{2\pi}} \left( e^{-\frac{p^{2}}{2}} - \lim_{u \to -\infty} e^{u} \right) \\
+&= \frac{1}{\sqrt{2\pi}} e^{-\frac{p^{2}}{2}}
+\end{align*}
+\end{proof}
+We're now tasked to show (using numeric integration) that for every $m>2$, $P$ also follows a standard normal distribution. I've chosen to demonstrate this with a small Python script using SciPy as an interface to the Fortran library \textit{QUADPACK}. Using adaptive quadrature we first approximate the integral expression of the general form of the pdf and then integrate (again using adaptive quadrature) over the pdf (from -$\infty$ to $p$, where $p$ denotes one of 50 reference values between $-3$ and $3$). This procedure is done for every other value of $m>2$ until we've reached 9 (arbitrary limit to keep processing time reasonable). Using these values we're able to approximate four cdfs (one for each $m$). We then plot all these functions in conjunction with the real cdf of a standard normal. As evidenced by the figure below, we can't distinguish them (as we expected / hoped):
+\begin{center}
+\includegraphics[scale=0.7]{13.pdf}
+\end{center}
+Additionally, I've chosen to store the last iteration's ($m=9$) approximations and - using the Python module \textit{Pandas} - stored them in a dataframe, added a column containing the values from a normal cdf, and extended it with the absolute value of the difference as an additional way to convinve you of the results. This dataframe is converted to \LaTeX $\,$ code and looks as follows (note that every other row was dropped to keep it at a reasonable size):
+\begin{center}
+\begin{small}
+\input{Figures/NumericIntegration}
+\end{small}
+\end{center}
+As indicated by this table, the differences are extremely small and thus, for all intents and purposes, we've shown what was to be shown. Finally, here's the code responsible for the entire analysis: 
+\begin{tcblisting}{
+    skin=enhanced,
+    colback=CSbackground,
+    boxrule=0pt,
+    arc=0pt,
+    outer arc=0pt,
+    top=-14.8pt,
+    bottom=-14.8pt,
+    colframe=red,
+    listing only,
+    left=-0.55pt,
+    right=-8pt,
+    overlay={\fill[CSnumberbg] ([xshift=-10pt]frame.south west) rectangle ([xshift=0pt]frame.north west);
+    \fill[CSnumberline] ([xshift=-10pt]frame.south west) rectangle ([xshift=-9pt]frame.north west);},
+    listing style=CSharp,
+    breakable,
+    bottomsep at break=14.8pt,
+    topsep at break=14.8pt,
+    colupper=white
+    }
+### Imports ###
+import math
+import numpy as np
+import scipy.special as special
+from scipy.integrate import quad, dblquad
+from scipy.stats import norm
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+import os
+import codecs
+
+### Define & Create Variables ###
+pList = np.linspace(-3, 3, num=50) # generate 50 values for p for comparison
+mList = range(3,10,2) # test every other value of m until 9 (M = 4)
+normcdfList = norm.cdf(pList) # generate 50 values for the p with std. normal cdf for comparison
+
+numInt = plt.figure() # start figure...
+
+### Do Double Numeric Integration to Estimate values for the CDF of P ###
+for eachParam in mList: # do it for all M values of m
+	cdfList = [] # create empty list to store estimated CDF values
+	m = eachParam # shorter notation
+	# estimate the constant
+	const = special.gamma(m-1) * 2**(3*(1-m/2)) / (special.gamma(m/2) * special.gamma((m-1)/2) * special.gamma((m-1)/2) )
+	for eachPoint in pList: # estimate F_P(p) for all 50 data points (-3 to 3)
+		cdf = dblquad(lambda t, p: const * 1/abs(t) * (p/t)**(m-1) * np.exp(-0.5*(p/t)**2) * (1-t**2)**((m-3)/2), -np.inf, eachPoint, lambda p: 0, lambda p: 1)
+		cdf = cdf[0] # extract approximation and toss error term
+		cdfList.append(cdf) # append approximation to list for comparison
+	plotLabel = r'CDF of $P \,$ with $m=$' + str(m) # raw string for LaTeX
+	plt.plot(pList, cdfList, label=plotLabel) # plot approx. cdf
+
+### Finish Plot ###
+plt.plot(pList, normcdfList, label=r'CDF of Std. Normal RV') # raw string for LaTeX
+plt.title('CDFs Approximated Using Numeric Integration')
+plt.legend(loc='lower right')
+os.chdir('../Figures/') # navigate to "Figures" folder
+plt.savefig('13.pdf') # store figure as pdf
+plt.close(numInt)
+
+### Create LaTeX Table with Comparison for m = 9 ###
+diffList = abs(cdfList - normcdfList) # list of absolute values of differences
+comparisonDF = pd.DataFrame({'Input Value' : pList, 'Num. Integration' : cdfList, 'Normal CDF' : norm.cdf(pList), 'Absolute Difference' : diffList})
+comparisonDF = comparisonDF[['Input Value', 'Num. Integration', 'Normal CDF', 'Absolute Difference']]
+comparisonDF.drop(range(1,48,2), axis=0, inplace = True) # drop every other row (readability)
+# export table to a .tex file that is loaded by my LaTeX document...reproducibility FTW
+table = comparisonDF.to_latex(index = False)
+writeFile = codecs.open('NumericIntegration.tex','w', 'utf-8')
+writeFile.write(table)
+writeFile.close()
+\end{tcblisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question 14 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+Let $X_i \stackrel{iid}{\sim} \unif(0,1)$, $i = 1, \ldots, n$, let $s$ and $t$ be values such that $0 < s < t < 1$, and define $N_n(s) = \sum_{i=1}^n \, \mathbb{I}_{[0,s]}(X_i)$ such that $N_n(s)$ denotes the number of $X_i$ which are less than or equal to $s$. Furthermore, let $X = N_n(s)$, $Y = N_n(t)$, and $D=Y-X$.
+\begin{labeling}{Induction stepzzzzzz}
+\item[\textbf{Proposition:}] $(D \vert X = x) \sim \text{Bin}(n-x, (t-s)/(1-s))$
+\end{labeling}
+\begin{proof}
+We're mainly interested in the distribution of $D$ (conditional on $X$) and plan to use a bivariate transformation that expresses the joint pmf of $D$ and some dummy variable $M$ as a function of the joint pmf of $X$ and $Y$. Let us thus start by obtaining the pmf of $X$. Since $X$ is just a sum of Bernoulli random variables $X_i$, it follows a binomial distribution:
+\begin{align*}
+f_X(x;n,s) &= \binom{n}{x} s^x (1-s)^{n-x} \, \mathbb{I}(0 \leq x \leq n)
+\intertext{Let us now think about the joint distribution of $X$ and $Y$. We know - by definition -  that $x$ values are contained in the interval $\left[ 0,s \right]$ and $y$ values are within $\left[ 0,t \right]$. This implies that $y-x$ values are contained in the interval $\left( s,t \right]$. Finally, we conclude that $n-y$ values exceed $t$. Hence we've now identified three possibilities, which - in conjunction with the fact that all $X_i$ are iid - enables us to deduce that the joint pmf of $X$ and $Y$ must be trionomial. More specifically, we can state their joint pmf as follows:}
+f_{X,Y}(x,y; n,s,t) &= \binom{n}{x,\, y-x,\, n-y} s^x(t-s)^{y-x}(1-t)^{n-y} \, \mathbb{I}(0 \, \leq x \, \leq \,  y \, \leq \, n)
+\end{align*}
+Note that the equation above makes use of the trinomial coefficient, defined (in general) as follows:
+\begin{align*}
+\binom{n}{a,b,c} &= \frac{n!}{a! \, b! \, c!}
+\intertext{Let us now, as alluded to previously, state the joint pmf of $D$ and $M$ (the aforementioned dummy that enables us to use a bivariate transformation) as a function of the joint pmf of $X$ and $Y$ we just derived.}
+f_{D,M}(d,m) &= f_{X,Y}(x,y) \lvert \det \mathbf{J} \rvert
+\intertext{Note that this references the Jacobian matrix (which we are yet to state) and no longer explicitly indicates that all these functions depend on $n,s,t$, which improves readability. Recall that we've defined $D = Y-X$ and let $M$  be equal to $X$. Obviously, this is equivalent to stating $X = M$ and $Y = D + M$. We can now address the Jacobian matrix:}
+\mathbf{J} &=
+\begin{bmatrix}
+\dfrac{\partial x}{\partial d} & \dfrac{\partial x}{\partial m} \\[2.25ex]
+\dfrac{\partial y}{\partial d} & \dfrac{\partial y}{\partial m}
+\end{bmatrix}
+= \begin{bmatrix}
+0 & 1 \\
+1 & 1 \end{bmatrix} \\
+\lvert \det \mathbf{J} \rvert &= \lvert 0 \cdot 1 - 1 \cdot 1 \rvert = \lvert -1 \rvert = 1
+\intertext{Since this evaluates to one, we can simplify our joint pmf for $D$ and $M$ by omitting the Jacobi term.}
+f_{D,M}(d,m) &= f_{X,Y}(x,y) \\
+&= f_{X,Y}(m,d+m)
+\end{align*}
+Let us now insert the expression for the joint pmf of $X$ and $Y$ we derived already.
+\begin{align*}
+f_{D,M}(d,m) &= \binom{n}{m,\, d,\, n-(d+m)} s^m (t-s)^{d}(1-t)^{n-(d+m)} \, \mathbb{I}(0 \, \leq m \, \leq \,  d+m \, \leq \, n) \\
+&= \frac{n!}{m!\, d!\, (n-(d+m))!} s^m (t-s)^{d}(1-t)^{n-(d+m)} \, \mathbb{I}(0 \, \leq m \, \leq \,  d+m \, \leq \, n) \\
+&= \frac{n!}{m! \, (n-m)!} \frac{(n-m)!}{d! \, (n-m-d)!} s^m (t-s)^{d}(1-t)^{n-(d+m)} \, \mathbb{I}(0 \, \leq m \, \leq \,  d+m \, \leq \, n) \\
+&= \binom{n}{m} \binom{n-m}{d} s^m (t-s)^{d}(1-t)^{n-(d+m)} \, \mathbb{I}(0 \, \leq m \, \leq \,  d+m \, \leq \, n)
+\intertext{Now that we have an expression for their joint pmf, recall that we're actually interested in the distribution of $D$ conditional on $X$. Since we've defined $M=X$, we can use the definition of a conditional probability and apply it to our pmfs:}
+f_{D \vert M}(d \vert m) &= \frac{f_{D,M}(d,m)}{f_M(m)} = \frac{f_{D,M}(d,m)}{f_X(m)} \\
+&= \frac{\binom{n}{m}\binom{n-m}{d}}{\binom{n}{m}} \frac{\cancel{s^m} (t-s)^{d}(1-t)^{n-(d+m)}}{ \cancel{s^m} (1-s)^{n-m}} \, \mathbb{I}(0 \, \leq m \, \leq \,  d+m \, \leq \, n) \, \mathbb{I}(0 \leq m \leq n)
+\intertext{The two indicator functions can - using basic logic - be combined into one.}
+f_{D \vert M}(d \vert m) &= \frac{\binom{n}{m}\binom{n-m}{d}}{\binom{n}{m}} \frac{ (t-s)^{d}(1-t)^{n-(d+m)}}{ (1-s)^{n-m}} \, \mathbb{I}(0 \, \leq d \, \leq \,  n-m) \\
+&= \frac{\cancel{\binom{n}{m}}\binom{n-m}{d}}{\cancel{\binom{n}{m}}} \frac{ (t-s)^{d}(1-t)^{n-(d+m)}}{ (1-s)^{n-m}} \, \mathbb{I}(0 \, \leq d \, \leq \,  n-m) \\
+&= \binom{n-m}{d} \frac{(t-s)^d (1-t)^{n-(d+m)}}{(1-s)^{n-m} (1-s)^d (1-s)^{-d}} \, \mathbb{I}(0 \, \leq d \, \leq \,  n-m) \\
+&= \binom{n-m}{d} \left( \frac{t-s}{1-s} \right)^{d} \left( \frac{1-t}{1-s} \right)^{n-(d+m)} \, \mathbb{I}(0 \, \leq d \, \leq \,  n-m) \\
+&= \binom{n-m}{d} \left( \frac{t-s}{1-s} \right)^{d} \left( 1 - \frac{t-s}{1-s} \right)^{(n-m)-d} \, \mathbb{I}(0 \, \leq d \, \leq \,  n-m)
+\intertext{Or since $M=X$:}
+f_{D \vert X}(d \vert x) &= \binom{n-x}{d} \left( \frac{t-s}{1-s} \right)^{d} \left( 1 - \frac{t-s}{1-s} \right)^{(n-x)-d} \, \mathbb{I}(0 \, \leq d \, \leq \,  n-x)
+\end{align*}
+The last expression represents the pmf of a Binomial random variable with $n-x$ trials and a probability of success of $\frac{t-s}{1-s}$. Hence we've proven that $(D \vert X = x)$ does indeed follow a Binomial distribution:
+\begin{equation*}
+(D \vert X = x) \sim \text{Bin}(n-x, (t-s)/(1-s))
+\end{equation*}
+\end{proof}
+\end{enumerate}
+\end{document}
